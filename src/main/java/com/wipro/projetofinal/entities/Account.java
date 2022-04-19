@@ -2,7 +2,7 @@ package com.wipro.projetofinal.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -11,8 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-//import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,14 +31,16 @@ public abstract class Account implements Serializable {
 	protected Integer accountNumber = 0;
 	protected Double balance;
 	
-//    protected User customer;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o user relacionado a Account no db.
+    protected User customer;
     
-//	@OneToOne
-//	protected Moviment moviment;
-	@JsonFormat(shape= JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd",timezone = "GMT")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui todas as movimentacoes relacionadas a Account no db.
+	protected List<Moviment> moviment;
+	
+	@JsonFormat(shape= JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy",timezone = "GMT")
 	protected Instant createdDate;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o cartão relacionado a Account no db.
 	@JoinColumn(name = "credit_id")
 	protected CreditCard creditCard;
 
@@ -63,6 +66,19 @@ public abstract class Account implements Serializable {
 
 	public Double getBalance() {
 		return balance;
+	}
+
+	public List<Moviment> getMoviment() {
+		return moviment;
+	}
+	
+
+	public User getCustomer() {
+		return customer;
+	}
+
+	public CreditCard getCreditCard() {
+		return creditCard;
 	}
 
 	@Override

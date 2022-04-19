@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wipro.projetofinal.entities.enums.MovimentDescription;
+
 @Entity
 @Table(name = "tb_movimenties")
 public class Moviment implements Serializable{
@@ -23,17 +25,18 @@ public class Moviment implements Serializable{
 	private Calendar movimentDate;
 	private Double value;
 	private String accountDestination;
-//	private MovimentDescription movimentDescription;
+	private MovimentDescription movimentDescription;
 	
 	public Moviment() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Moviment(Long id, Calendar movimentDate, Double value, String accountDestination) {
+	public Moviment(Long id, Calendar movimentDate, Double value, String accountDestination, MovimentDescription md) {
 		this.id = id;
 		this.movimentDate = movimentDate;
 		this.value = value;
 		this.accountDestination = accountDestination;
+		this.movimentDescription = md;
 	}
 
 	public Calendar getMovimentDate() {
@@ -58,6 +61,14 @@ public class Moviment implements Serializable{
 
 	public void setAccountDestination(String accountDestination) {
 		this.accountDestination = accountDestination;
+	}
+
+	public MovimentDescription getMovimentDescription() {
+		return movimentDescription;
+	}
+
+	public void setMovimentDescription(MovimentDescription movimentDescription) {
+		this.movimentDescription = movimentDescription;
 	}
 
 	public Long getId() {

@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.wipro.projetofinal.entities.enums.CardLevel;
@@ -33,9 +31,6 @@ public class CreditCard implements Serializable {
 
 	private Boolean ativo;
 	
-	@OneToOne
-	@JoinColumn(name= "account_id")
-	private Account account;
 
 	public CreditCard() {
 		this.ativo = false;
