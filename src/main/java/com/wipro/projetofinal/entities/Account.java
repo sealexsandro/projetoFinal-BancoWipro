@@ -30,7 +30,7 @@ public abstract class Account implements Serializable {
 	@GenericGenerator(name = "uuid2",strategy = "uuid2")
 	String id;
 
-	protected Long accountNumber = 0L;
+	protected String accountNumber;
 	protected Double balance;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o user relacionado a Account no db.
@@ -54,7 +54,7 @@ public abstract class Account implements Serializable {
 		this.balance = balance;
 	}
 
-	public Long getAccountNumber() {
+	public String getAccountNumber() {
 		return accountNumber;
 	}
 
@@ -90,13 +90,13 @@ public abstract class Account implements Serializable {
 	}
 
 
-	public Long randomNumberAccount() {
-		String numberCreditCard = "";
+	public String randomNumberAccount() {
+		String numberAccount = "";
 		Random random = new Random();
 			for (int j = 0; j < 15; j++) {
-				numberCreditCard += Integer.toString(random.nextInt(10));
+				numberAccount += Integer.toString(random.nextInt(10));
 			}
-		return Long.parseLong(numberCreditCard);
+		return numberAccount;
 	}
 
 	@Override
