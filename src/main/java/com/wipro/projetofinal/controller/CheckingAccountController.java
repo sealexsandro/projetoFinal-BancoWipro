@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wipro.projetofinal.dto.AccountDTO;
 import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.service.ChekingAccountService;
 
@@ -25,4 +26,5 @@ public class CheckingAccountController {
 	public ResponseEntity<CheckingAccount> salvar(@RequestBody CheckingAccount checkingAccount) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.salvar(checkingAccount));
 	}
+	
 }

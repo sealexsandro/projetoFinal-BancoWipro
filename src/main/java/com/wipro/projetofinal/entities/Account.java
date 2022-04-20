@@ -32,7 +32,7 @@ public abstract class Account implements Serializable {
 	protected Double balance;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o user relacionado a Account no db.
-    protected User customer;
+    protected Customer customer;
     
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui todas as movimentacoes relacionadas a Account no db.
 	protected List<Moviment> moviment;

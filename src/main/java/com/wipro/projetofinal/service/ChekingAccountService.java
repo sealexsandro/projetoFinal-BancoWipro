@@ -9,11 +9,12 @@ import com.wipro.projetofinal.repository.CheckingAccountRepository;
 @Service
 public class ChekingAccountService {
 
-	
 	@Autowired
 	private CheckingAccountRepository repository;
-	
+
 	public CheckingAccount salvar(CheckingAccount checkingAccount) {
+
 		return repository.save(checkingAccount);
 	}
+
 }
