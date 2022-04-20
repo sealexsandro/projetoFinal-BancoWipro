@@ -13,6 +13,9 @@ import com.wipro.projetofinal.repository.CustomerRepository;
 import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
 
+import java.time.Instant;
+import java.util.List;
+
 @Service
 public class ManageService {
 	
@@ -27,35 +30,36 @@ public class ManageService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
-	
-	
-	
+
 	public CheckingAccount salvarCheckingAccount(String registration, CheckingAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId()) == true) {
+			account.setCreatedDate(Instant.now());
+			account.setAccountNumber();
 			return checkingAccountRepository.save(account);    //Se existir esse registro eu consigo salvar o "CheckingAccount".
 		};
-		
 		return checkingAccountRepository.getById((long) 0);    // Se não existir simplesmente vai dar erro 500 na aplicação.   
 	}
-	
-	
-	
+
 	public SpecialAccount salvarSpecialAccount(String registration, SpecialAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId()) == true) {
+			account.setCreatedDate(Instant.now());
 			return specialAccountRepository.save(account);    //Se existir esse registro eu consigo salvar o "CheckingAccount".
 		};
-		
 		return specialAccountRepository.getById((long) 0);    // Se não existir simplesmente vai dar erro 500 na aplicação.   
 	}
-	
-	
-	
-	
+
+	public List<CheckingAccount> findAllChecking(String registration){
+
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId()) == true) {
+			return checkingAccountRepository.findAll();
+		}
+		return null;
+	}
+
 	public Manager salvarManager(Manager manager) {		
 		return managerRepository.save(manager);
 	}
-	
-
 }

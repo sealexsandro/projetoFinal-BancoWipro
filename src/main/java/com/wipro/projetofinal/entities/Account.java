@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -17,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
 public abstract class Account implements Serializable {
@@ -24,11 +26,11 @@ public abstract class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2",strategy = "uuid2")
+	String id;
 
-	protected static Integer count = 1;
-	protected Integer accountNumber = 0;
+	protected Long accountNumber = 0L;
 	protected Double balance;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o user relacionado a Account no db.
@@ -37,31 +39,26 @@ public abstract class Account implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui todas as movimentacoes relacionadas a Account no db.
 	protected List<Moviment> moviment;
 	
-	@JsonFormat(shape= JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy",timezone = "GMT")
+	@JsonFormat(shape= JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy HH:mm:ss",timezone = "GMT-3")
 	protected Instant createdDate;
+
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o cartão relacionado a Account no db.
 	@JoinColumn(name = "credit_id")
 	protected CreditCard creditCard;
 
 	public Account() {
-
 	}
 
-	public Account(Double balance,Instant createdDate) {
-		this.accountNumber = count;
-		count++;
+	public Account(Double balance) {
 		this.balance = balance;
-		this.createdDate = createdDate;
-		
 	}
 
-
-	public Integer getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -72,7 +69,17 @@ public abstract class Account implements Serializable {
 	public List<Moviment> getMoviment() {
 		return moviment;
 	}
-	
+
+	public Instant getCreatedDate(){
+		return  this.createdDate;
+	}
+	public void setCreatedDate(Instant momento){
+		this.createdDate =  momento;
+	}
+
+	public void setAccountNumber(){
+		this.accountNumber = randomNumberAccount() ;
+	}
 
 	public User getCustomer() {
 		return customer;
@@ -80,6 +87,16 @@ public abstract class Account implements Serializable {
 
 	public CreditCard getCreditCard() {
 		return creditCard;
+	}
+
+
+	public Long randomNumberAccount() {
+		String numberCreditCard = "";
+		Random random = new Random();
+			for (int j = 0; j < 15; j++) {
+				numberCreditCard += Integer.toString(random.nextInt(10));
+			}
+		return Long.parseLong(numberCreditCard);
 	}
 
 	@Override
