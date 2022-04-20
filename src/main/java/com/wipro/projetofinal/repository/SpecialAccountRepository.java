@@ -8,4 +8,6 @@ import com.wipro.projetofinal.entities.SpecialAccount;
 @Repository
 public interface SpecialAccountRepository extends JpaRepository<SpecialAccount, Long>{
 
+	SpecialAccountRepository save(SpecialAccountRepository account);
+
 }
