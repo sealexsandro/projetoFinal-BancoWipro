@@ -31,7 +31,11 @@ public class ManageService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	public CheckingAccount salvarCheckingAccount(String registration, CheckingAccount account) {
+	public Manager saveManager(Manager manager) {
+		return managerRepository.save(manager);
+	}
+
+	public CheckingAccount saveCheckingAccount(String registration, CheckingAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId()) == true) {
 			account.setCreatedDate(Instant.now());
@@ -41,9 +45,10 @@ public class ManageService {
 		return checkingAccountRepository.getById((long) 0);    // Se não existir simplesmente vai dar erro 500 na aplicação.   
 	}
 
-	public SpecialAccount salvarSpecialAccount(String registration, SpecialAccount account) {
+	public SpecialAccount saveSpecialAccount(String registration, SpecialAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId()) == true) {
+			account.setAccountNumber();
 			account.setCreatedDate(Instant.now());
 			return specialAccountRepository.save(account);    //Se existir esse registro eu consigo salvar o "CheckingAccount".
 		};
@@ -59,7 +64,45 @@ public class ManageService {
 		return null;
 	}
 
-	public Manager salvarManager(Manager manager) {		
-		return managerRepository.save(manager);
+	public List<SpecialAccount> findAllSpecial(String registration){
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			return  specialAccountRepository.findAll();
+		}
+		return null;
 	}
+
+	public CheckingAccount findByAccountNumberChecking(String registration, String number){
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			return  checkingAccountRepository.findByAccountNumber(number);
+		}
+		return null;
+	}
+
+	public SpecialAccount findByAccountNumberSpecial(String registration, String number){
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			return  specialAccountRepository.findByAccountNumber(number);
+		}
+		return null;
+	}
+
+	public void deleteAccountChecking(String registration, String number){
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+		 CheckingAccount obj =	checkingAccountRepository.findByAccountNumber(number);
+		 checkingAccountRepository.delete(obj);
+		}
+	}
+
+	public void deleteAccountSpecial(String registration, String number){
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			SpecialAccount obj = specialAccountRepository.findByAccountNumber(number);
+			specialAccountRepository.delete(obj);
+		}
+	}
+
+
 }
