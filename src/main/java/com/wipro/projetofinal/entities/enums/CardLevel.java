@@ -15,6 +15,8 @@ public enum CardLevel {
 	public Integer getCode(){
 		return this.code;
 	}
+
+
 	public static CardLevel valueOf(int value){
 		for (CardLevel code:
 				CardLevel.values()) {

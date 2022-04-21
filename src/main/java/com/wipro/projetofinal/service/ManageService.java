@@ -1,5 +1,6 @@
 package com.wipro.projetofinal.service;
 
+import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.wipro.projetofinal.repository.SpecialAccountRepository;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ManageService {
@@ -31,22 +33,9 @@ public class ManageService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
-	
-	
 
 	public Manager saveManager(Manager manager) {
 		return managerRepository.save(manager);
-	}
-	
-	public List<Account> findAllAccounts(String registration) {
-		Manager manager = managerRepository.findByRegistration(registration);
-		List<Account> accounts = new ArrayList<Account>();
-		if(managerRepository.existsById(manager.getId()) == true) {
-			accounts.addAll(findAllChecking(registration));
-			accounts.addAll(findAllSpecial(registration));
-			return accounts;
-		}
-		return null;
 	}
 
  	public CheckingAccount saveCheckingAccount(String registration, CheckingAccount account) {
@@ -69,6 +58,18 @@ public class ManageService {
 		return specialAccountRepository.getById((long) 0);    // Se não existir simplesmente vai dar erro 500 na aplicação.   
 	}
 
+	// ele retorna uma lista vazia nao precisa de execao
+	public List<Account> findAllAccounts(String registration) {
+		Manager manager = managerRepository.findByRegistration(registration);
+		List<Account> accounts = new ArrayList<Account>();
+		if(managerRepository.existsById(manager.getId()) == true) {
+			accounts.addAll(findAllChecking(registration));
+			accounts.addAll(findAllSpecial(registration));
+			return accounts;
+		}
+		return null;
+	}
+
 	public List<CheckingAccount> findAllChecking(String registration){
 
 		Manager manager = managerRepository.findByRegistration(registration);
@@ -77,7 +78,7 @@ public class ManageService {
 		}
 		return null;
 	}
-
+	// ele retorna uma lista vazia nao precisa de execao
 	public List<SpecialAccount> findAllSpecial(String registration){
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId())==true){
@@ -86,22 +87,29 @@ public class ManageService {
 		return null;
 	}
 
+	// consigo tratar somente um erro
 	public CheckingAccount findByAccountNumberChecking(String registration, String number){
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId())==true){
-			return  checkingAccountRepository.findByAccountNumber(number);
+			CheckingAccount obj =  checkingAccountRepository.findByAccountNumber(number);
+			Optional<CheckingAccount> checking = Optional.ofNullable(obj);
+			return checking.orElseThrow(()-> new ResourceNotFoundExcception(number));
 		}
 		return null;
 	}
 
+	// consigo tratar somente um erro
 	public SpecialAccount findByAccountNumberSpecial(String registration, String number){
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId())==true){
-			return  specialAccountRepository.findByAccountNumber(number);
+			SpecialAccount obj =  specialAccountRepository.findByAccountNumber(number);
+			Optional<SpecialAccount> checking = Optional.ofNullable(obj);
+			return checking.orElseThrow(()-> new ResourceNotFoundExcception(number));
 		}
 		return null;
 	}
 
+	
 	public void deleteAccountChecking(String registration, String number){
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId())==true){
