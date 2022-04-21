@@ -1,20 +1,47 @@
 
-# Projeto Final  -  Banco Wipro - GRUPO JARVIS#
+<h1>🌻 ========= Wipro ======== 🌻</h1>
 
-Seja bem vindo a este repositório. 
-Este projeto trata-se de um desafio de programação do bootcamp da Wipro.
+## Welcome to this repository!
 
-### Status
-Sprint 1 - Concluída
+This project is a Wipro bootcamp programming challenge taught by Gama Academy teachers.
 
-### Descrição
-Projeto em console capaz de gerenciar contas bancárias realizando operações comuns como: saque, depósito e consulta dos dados.
+## Sprint 2️⃣
+> Status: Done ✅
 
-### Requisitos para execução
-1. Java jdk 11 64 bits instalado 
-2. IDE Eclipse (importar como projeto existente maven).
+## Description 📜
+API for web access of the application that makes a bank account management allowing the following operations are carried out:
 
-### Execução do Projeto
+- Creaton ➕
+- Query 🔍
+- Removal ➖
+- Deposit 💰🟢
+- Withdraw 💰🔴
+- Transfer 🔃
+- Credit Card 💳
 
-### Colaboradores:
+## Technologies and frameworks used
+<table> 
+  <tr>
+    <td>Tech or Frame</td>
+    <td>OpenJDK ☕</td>
+    <td>Eclipse IDE🌑</td>
+    <td>Spring Tools 🍃</td>
+    <td>Postman 👨🏿‍🚀</td>
+    <td>MySQL 🐬</td>
+  </tr>
+  <tr>
+    <td>Version</td>
+    <td>11 64-bit</td>
+    <td>2022-23</td>
+    <td>4(Spring Boot)</td>
+    <td>9.15.2 64-bit</td>
+    <td>8.0.28.0</td>
+  </tr>
+</table>
+
+## Project execution
+
+
+
+## Authors
 Douglas Williams, Ícaro Leone, Rafael Roco, Murilo Fernandes, Lucas Vilela, Sebastião Alexsandro.
