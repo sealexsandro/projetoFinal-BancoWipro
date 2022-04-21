@@ -27,7 +27,11 @@ public class ManagerControler {
 	
 	@Autowired
 	private ManageService manageService;
-
+	
+	@PostMapping
+	public ResponseEntity<Manager> salvarManager(@RequestBody Manager manager) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveManager(manager));
+	}
 
 	@GetMapping("/checkingAccount/{registration}/{accountNumber}")
 	public ResponseEntity<CheckingAccount> getByAccountNumberChecking(@PathVariable String registration,@PathVariable String accountNumber){
@@ -38,6 +42,12 @@ public class ManagerControler {
 	public ResponseEntity<SpecialAccount> getByAccountNumberSpecial(@PathVariable String registration,@PathVariable String accountNumber){
 		SpecialAccount obj = manageService.findByAccountNumberSpecial(registration,accountNumber);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping("/{registration}/all")
+	public ResponseEntity<List<Account>> getAllAccounts(@PathVariable String registration){
+		List<Account> accounts = manageService.findAllAccounts(registration);
+		return ResponseEntity.ok().body(accounts);
 	}
 
 	@GetMapping("/checkingAccount/{registration}")
@@ -50,11 +60,6 @@ public class ManagerControler {
 	public ResponseEntity<List<SpecialAccount>> getAllSpecial(@PathVariable String registration){
 		List<SpecialAccount> list = manageService.findAllSpecial(registration);
 		return ResponseEntity.ok().body(list);
-	}
-
-	@PostMapping
-	public ResponseEntity<Manager> salvarManager(@RequestBody Manager manager) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveManager(manager));
 	}
 
 	@PostMapping("/checkingAccount/{registration}") // Feito, so passar para o de baixo

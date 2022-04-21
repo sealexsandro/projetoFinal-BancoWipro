@@ -14,6 +14,7 @@ import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,12 +31,25 @@ public class ManageService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	
 
 	public Manager saveManager(Manager manager) {
 		return managerRepository.save(manager);
 	}
+	
+	public List<Account> findAllAccounts(String registration) {
+		Manager manager = managerRepository.findByRegistration(registration);
+		List<Account> accounts = new ArrayList<Account>();
+		if(managerRepository.existsById(manager.getId()) == true) {
+			accounts.addAll(findAllChecking(registration));
+			accounts.addAll(findAllSpecial(registration));
+			return accounts;
+		}
+		return null;
+	}
 
-	public CheckingAccount saveCheckingAccount(String registration, CheckingAccount account) {
+ 	public CheckingAccount saveCheckingAccount(String registration, CheckingAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if(managerRepository.existsById(manager.getId()) == true) {
 			account.setCreatedDate(Instant.now());
@@ -104,5 +118,28 @@ public class ManageService {
 		}
 	}
 
+	public CheckingAccount updateByAccountNumberChecking(String registration, String number, CheckingAccount updateCa) {
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			CheckingAccount cadb = checkingAccountRepository.findByAccountNumber(number);
+			cadb.setCustomer((Customer)updateCa.getCustomer());
+			cadb.setCreditCard(updateCa.getCreditCard());
+			return  cadb;
+		}
+		return null;
+	}
+	
+	public SpecialAccount updateByAccountNumberSpecial(String registration, String number, SpecialAccount updateSa) {
+		Manager manager = managerRepository.findByRegistration(registration);
+		if(managerRepository.existsById(manager.getId())==true){
+			SpecialAccount cadb = specialAccountRepository.findByAccountNumber(number);
+			cadb.setCustomer((Customer)updateSa.getCustomer());
+			cadb.setCreditCard(updateSa.getCreditCard());
+			cadb.setSpecialLimit(updateSa.getSpecialLimit());
+			return  cadb;
+		}
+		return null;
+	}
+	
 
 }

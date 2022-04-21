@@ -116,4 +116,16 @@ public abstract class Account implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+	
+	
+	
+	
+
 }
