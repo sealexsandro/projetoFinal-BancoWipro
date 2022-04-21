@@ -30,7 +30,6 @@ public class CreditCard implements Serializable {
 	private Integer cardLevel;
 
 	private Boolean ativo;
-	
 
 	public CreditCard() {
 		this.ativo = false;
