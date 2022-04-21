@@ -31,22 +31,9 @@ public class ManageService {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
-	
-	
 
 	public Manager saveManager(Manager manager) {
 		return managerRepository.save(manager);
-	}
-	
-	public List<Account> findAllAccounts(String registration) {
-		Manager manager = managerRepository.findByRegistration(registration);
-		List<Account> accounts = new ArrayList<Account>();
-		if(managerRepository.existsById(manager.getId()) == true) {
-			accounts.addAll(findAllChecking(registration));
-			accounts.addAll(findAllSpecial(registration));
-			return accounts;
-		}
-		return null;
 	}
 
  	public CheckingAccount saveCheckingAccount(String registration, CheckingAccount account) {
@@ -67,6 +54,17 @@ public class ManageService {
 			return specialAccountRepository.save(account);    //Se existir esse registro eu consigo salvar o "CheckingAccount".
 		};
 		return specialAccountRepository.getById((long) 0);    // Se não existir simplesmente vai dar erro 500 na aplicação.   
+	}
+
+	public List<Account> findAllAccounts(String registration) {
+		Manager manager = managerRepository.findByRegistration(registration);
+		List<Account> accounts = new ArrayList<Account>();
+		if(managerRepository.existsById(manager.getId()) == true) {
+			accounts.addAll(findAllChecking(registration));
+			accounts.addAll(findAllSpecial(registration));
+			return accounts;
+		}
+		return null;
 	}
 
 	public List<CheckingAccount> findAllChecking(String registration){
