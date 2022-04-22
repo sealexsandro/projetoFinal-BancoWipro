@@ -72,7 +72,7 @@ public class CreditCard implements Serializable {
 	}
 
 	public CardLevel getCardLevel() {
-		return this.cardLevel;
+		return  this.cardLevel;
 	}
 
 	public Boolean getAtivo() {

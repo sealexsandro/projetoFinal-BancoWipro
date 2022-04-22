@@ -82,13 +82,18 @@ public abstract class Account implements Serializable {
 	}
 
 	public Customer getCustomer() {
-		return customer;
+		return this.customer;
 	}
 
 	public CreditCard getCreditCard() {
 		return creditCard;
 	}
+	
 
+
+	public void updateBalance(Double value) {
+		this.balance += value;
+	}
 
 	public String randomNumberAccount() {
 		String numberAccount = "";
