@@ -81,7 +81,7 @@ public abstract class Account implements Serializable {
 		this.accountNumber = randomNumberAccount() ;
 	}
 
-	public User getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 

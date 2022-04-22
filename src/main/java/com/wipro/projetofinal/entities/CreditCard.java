@@ -27,7 +27,7 @@ public class CreditCard implements Serializable {
 	private String cvv;
 	private Calendar expirationDate;
 	private String flag;
-	private Integer cardLevel;
+	private CardLevel cardLevel;
 
 	private Boolean ativo;
 
@@ -72,7 +72,7 @@ public class CreditCard implements Serializable {
 	}
 
 	public CardLevel getCardLevel() {
-		return  CardLevel.valueOf(cardLevel);
+		return this.cardLevel;
 	}
 
 	public Boolean getAtivo() {
@@ -85,9 +85,10 @@ public class CreditCard implements Serializable {
 
 	public void setCardLevel(CardLevel cardLevel) {
 		if(cardLevel!=null) {
-			this.cardLevel = cardLevel.getCode();
+			this.cardLevel = cardLevel;
 		}
 	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
