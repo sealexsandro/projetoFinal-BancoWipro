@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -22,18 +23,20 @@ public abstract class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 	
-//	@NotBlank(message = "Nome é obrigatório!")
+	@NotBlank(message = "Nome é obrigatório!")
 	protected String name;
 	
-//	@CPF
-//    @Column(nullable = true)
+	@CPF(message = "CPF Inválido!")
+    @Column(nullable = false, unique = true)
     private String cpf;
 	
-//	@NotBlank(message = "Email é obrigatório!")
-//	@Email
+	@NotBlank(message = "Email é obrigatório!")
+	@Email(message = "Email Inválido!")
+	@Column(nullable = false, unique = true)
 	protected String email;
 	
-//	@NotBlank(message = "Senha é obrigatório!")
+	@NotBlank(message = "Senha é obrigatório!")
+	@Size(min = 6, max = 50)
 	protected String password;
 	
 
