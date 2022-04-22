@@ -1,5 +1,7 @@
 package com.wipro.projetofinal.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.Customer;
+import com.wipro.projetofinal.entities.Moviment;
 import com.wipro.projetofinal.service.CustomerService;
 import com.wipro.projetofinal.service.exeption.InvalidValueException;
 
@@ -30,6 +33,11 @@ public class CustomerControler {
 	@GetMapping("/{accountNumber}")
 	public ResponseEntity<Account> getAccount(@PathVariable String accountNumber) {
 		return ResponseEntity.ok().body(customerService.getAccount(accountNumber));
+	}
+
+	@GetMapping("/movimenties/{accountNumber}")
+	public ResponseEntity<List<Moviment>> getMovimentAccount(@PathVariable String accountNumber) {
+		return ResponseEntity.ok().body(customerService.getAllMovimenties(accountNumber));
 	}
 
 	@PutMapping("/deposit/{accountNumber}")

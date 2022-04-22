@@ -3,11 +3,15 @@ package com.wipro.projetofinal.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-//import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 @MappedSuperclass
 public abstract class User implements Serializable{
@@ -18,15 +22,21 @@ public abstract class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 	
+//	@NotBlank(message = "Nome é obrigatório!")
 	protected String name;
-	protected String cpf;
+	
+//	@CPF
+//    @Column(nullable = true)
+    private String cpf;
+	
+//	@NotBlank(message = "Email é obrigatório!")
+//	@Email
 	protected String email;
+	
+//	@NotBlank(message = "Senha é obrigatório!")
 	protected String password;
 	
-//	@OneToMany
-//	private Account account;
-	
-	
+
 	public User() {
 	}
 
@@ -35,6 +45,7 @@ public abstract class User implements Serializable{
 		this.cpf = cpf;
 		this.email = email;
 		this.password = password;
+		setCpf(cpf);
 	}
 
 	public String getName() {
@@ -49,10 +60,7 @@ public abstract class User implements Serializable{
 		return cpf;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -72,6 +80,15 @@ public abstract class User implements Serializable{
 	public Long getId() {
 		return id;
 	}
+	
+	public void setCpf(String cpf) {
+        if(cpf != null && cpf.length() == 0) {
+            this.cpf = null;
+        }
+        else {
+            this.cpf = cpf;
+        }
+    }
 
 	@Override
 	public int hashCode() {
