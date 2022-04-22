@@ -4,7 +4,8 @@ public class InvalidMoneyValue extends RuntimeException {
 
 	  private static final long serialVersionUID = 1L;
 
-	  public InvalidMoneyValue (String msg) {
-		  super(msg);
+	  public InvalidMoneyValue (Object number) {
+		super("Valor "+number+" inválido");
+
 	  }
 }
