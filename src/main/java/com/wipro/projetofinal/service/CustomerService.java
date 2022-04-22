@@ -35,12 +35,10 @@ public class CustomerService {
 		}
 	}
 
-	public Account deposit(String numberAccount, Double value) {
+	public Account deposit(String numberAccount, Double value) throws Exception {
 		Account account = getAccount(numberAccount);
-
-		if (value > 0) {
-			System.out.println(value);
-			account.deposit(value);
+		
+		if(value > 0) {
 						
 			// Guardando a movimentação de deposito na conta
 			Moviment moviment = new Moviment(value, MovimentDescription.DEPOSIT);
@@ -50,9 +48,8 @@ public class CustomerService {
 			account = saveAccount(account);
 			
 			return account;
-		} else {
-			throw new InvalidMoneyValue("Valor " + value + " inválido");
-		}
+		} 
+			throw new InvalidMoneyValue(value);
 	}
 
 	// Metodo para Sacar
@@ -143,6 +140,5 @@ public class CustomerService {
 		} else {
 			return specialAccountRepository.save((SpecialAccount) account);
 		}
-
 	}
 }

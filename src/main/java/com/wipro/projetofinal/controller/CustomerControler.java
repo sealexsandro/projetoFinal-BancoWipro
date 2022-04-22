@@ -61,6 +61,7 @@ public class CustomerControler {
 		} catch (InvalidMoneyValue ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, ex.getMessage());
 		}
+
 	}
 
 }
