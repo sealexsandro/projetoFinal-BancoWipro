@@ -39,8 +39,9 @@ public class CustomerService {
 	}
 
 	
-	public Account deposit(String numberAccount, Double value) {
+	public Account deposit(String numberAccount, Double value) throws Exception {
 		Account account = getAccount(numberAccount);
+		
 		if(value > 0) {
 			System.out.println(value);
 			account.updateBalance(value);
@@ -52,10 +53,8 @@ public class CustomerService {
 			if(account.getClass().getName().equals("com.wipro.projetofinal.entities.SpecialAccount")) {
 				specialAccountRepository.save((SpecialAccount) account);
 				 return account;
-			}
+			}	
 		}
-		//return account;
-		//Optional<Account> nvalue = Optional.ofNullable(account);
-		throw new NumberException(value);		
+		throw new NumberException(value); 
 	}
 }

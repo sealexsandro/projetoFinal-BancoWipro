@@ -31,7 +31,7 @@ public class CustomerControler {
 	}
 	
 	@PutMapping("/{accountNumber}")
-	public ResponseEntity<Account> depositAccount(@PathVariable String accountNumber, @RequestParam Double value ){
+	public ResponseEntity<Account> depositAccount(@PathVariable String accountNumber, @RequestParam Double value ) throws Exception{
 		return ResponseEntity.ok().body(customerService.deposit(accountNumber, value));
 	}
 	
