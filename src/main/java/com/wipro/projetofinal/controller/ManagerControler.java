@@ -19,6 +19,7 @@ import com.wipro.projetofinal.repository.SpecialAccountRepository;
 import com.wipro.projetofinal.service.CustomerService;
 import com.wipro.projetofinal.service.ManageService;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,7 +36,8 @@ public class ManagerControler {
 	private ManageService manageService;
 
 	@PostMapping
-	public ResponseEntity<Manager> saveManager(@RequestBody Manager manager) {
+	public ResponseEntity<Manager> saveManager(@RequestBody Manager manager)
+			throws Exception, SQLIntegrityConstraintViolationException {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveManager(manager));
 	}
 
@@ -53,7 +55,7 @@ public class ManagerControler {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@GetMapping("/accountAll/{registration}/")
+	@GetMapping("/accountAll/{registration}")
 	public ResponseEntity<List<Account>> getAllAccounts(@PathVariable String registration) {
 		List<Account> accounts = manageService.findAllAccounts(registration);
 		return ResponseEntity.ok().body(accounts);
@@ -90,7 +92,7 @@ public class ManagerControler {
 
 	@PutMapping("/checkingAccount/{registration}/{accountNumber}")
 	public ResponseEntity<CheckingAccount> updateChecking(@PathVariable String registration,
-			@PathVariable String accountNumber, @RequestBody CheckingAccount updateCa) {
+			@PathVariable String accountNumber, @RequestBody @Valid CheckingAccount updateCa) throws Exception {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(manageService.updateByAccountNumberChecking(registration, accountNumber, updateCa));
 	}

@@ -1,7 +1,10 @@
 package com.wipro.projetofinal.service;
 
-import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
-import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
@@ -12,17 +15,13 @@ import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.CreditCard;
 import com.wipro.projetofinal.entities.Customer;
 import com.wipro.projetofinal.entities.Manager;
-import com.wipro.projetofinal.entities.Moviment;
 import com.wipro.projetofinal.entities.SpecialAccount;
 import com.wipro.projetofinal.repository.CheckingAccountRepository;
 import com.wipro.projetofinal.repository.CustomerRepository;
 import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
+import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 
 @Service
 public class ManageService {
@@ -41,6 +40,7 @@ public class ManageService {
 
 	public Manager saveManager(Manager manager) {
 		return managerRepository.save(manager);
+
 	}
 
 	public AccountDTO saveCheckingAccount(String registration, CheckingAccount account) {
@@ -238,7 +238,7 @@ public class ManageService {
 		if (manager != null) {
 			Account account = getAccount(number);
 			account.setCreditCard(card);
-			
+
 			if (account.getClass().getName().equals(CheckingAccount.class.getName())) {
 				return checkingAccountRepository.save((CheckingAccount) account);
 			} else {

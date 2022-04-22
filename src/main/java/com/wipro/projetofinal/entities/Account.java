@@ -35,7 +35,6 @@ public abstract class Account implements Serializable {
 	protected String accountNumber;
 	protected Double balance;
 
-	@Valid 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // exclui o user relacionado a Account no db.
 	protected Customer customer;
 
