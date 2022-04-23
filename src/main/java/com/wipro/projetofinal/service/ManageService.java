@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
-import com.wipro.projetofinal.dto.AccountDTO;
+import com.wipro.projetofinal.dto.AccountChekingDTO;
+import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.CreditCard;
@@ -40,10 +41,9 @@ public class ManageService {
 
 	public Manager saveManager(Manager manager) {
 		return managerRepository.save(manager);
-
 	}
 
-	public AccountDTO saveCheckingAccount(String registration, CheckingAccount account) {
+	public AccountChekingDTO saveCheckingAccount(String registration, CheckingAccount account) {
 
 		Manager manager = managerRepository.findByRegistration(registration);
 
@@ -59,12 +59,12 @@ public class ManageService {
 				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
 																			// salva a Account e descartar o customer
 					CheckingAccount checkingAccount = checkingAccountRepository.save(account);
-					AccountDTO accountDTO = new AccountDTO(checkingAccount);
+					AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
 					return accountDTO;
 				} else {
 					account.setCustomer(customer);
 					CheckingAccount checkingAccount = checkingAccountRepository.save(account);
-					AccountDTO accountDTO = new AccountDTO(checkingAccount);
+					AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
 					return accountDTO;
 				}
 
@@ -77,7 +77,7 @@ public class ManageService {
 		}
 	}
 
-	public AccountDTO saveSpecialAccount(String registration, SpecialAccount account) {
+	public AccountSpecialDTO saveSpecialAccount(String registration, SpecialAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if (manager != null) {
 			account.setAccountNumber();
@@ -90,12 +90,12 @@ public class ManageService {
 				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
 																			// salva a Account e descartar o customer
 					SpecialAccount specialAccount = specialAccountRepository.save(account);
-					AccountDTO accountDTO = new AccountDTO(specialAccount);
+					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
 					return accountDTO;
 				} else {
 					account.setCustomer(customer);
 					SpecialAccount specialAccount = specialAccountRepository.save(account);
-					AccountDTO accountDTO = new AccountDTO(specialAccount);
+					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
 					return accountDTO;
 				}
 

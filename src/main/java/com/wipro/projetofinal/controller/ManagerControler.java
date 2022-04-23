@@ -7,7 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.wipro.projetofinal.dto.AccountDTO;
+import com.wipro.projetofinal.dto.AccountChekingDTO;
+import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.CreditCard;
@@ -68,24 +69,19 @@ public class ManagerControler {
 	}
 
 	@GetMapping("/specialAccount/{registration}")
-	public ResponseEntity<List<SpecialAccount>> getAllSpecial(@PathVariable String registration) {
+	public ResponseEntity<List<SpecialAccount>> getAllSpecial(@PathVariable String registration) throws Exception  {
 		List<SpecialAccount> list = manageService.findAllSpecial(registration);
 		return ResponseEntity.ok().body(list);
 	}
 
 	@PostMapping("/checkingAccount/{registration}") // Feito, so passar para o de baixo
-	public ResponseEntity<AccountDTO> salvarCheckingAccount(@PathVariable String registration,
-			@RequestBody CheckingAccount account, BindingResult result) {
-
-		if (result.hasErrors()) {
-			return ResponseEntity.noContent().build();
-		}
-
+	public ResponseEntity<AccountChekingDTO> salvarCheckingAccount(@PathVariable String registration,
+			@RequestBody CheckingAccount account, BindingResult result) throws Exception {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveCheckingAccount(registration, account));
 	}
 
 	@PostMapping("/specialAccount/{registration}")
-	public ResponseEntity<AccountDTO> salvarSpecialAccount(@PathVariable String registration,
+	public ResponseEntity<AccountSpecialDTO> salvarSpecialAccount(@PathVariable String registration,
 			@RequestBody SpecialAccount account) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveSpecialAccount(registration, account));
 	}
