@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.Customer;
 import com.wipro.projetofinal.entities.Moviment;
 import com.wipro.projetofinal.entities.SpecialAccount;
@@ -24,14 +23,7 @@ public class AccountSpecialDTO {
 	
 	protected Double specialLimite;
 	
-	
-	public AccountSpecialDTO(CheckingAccount account) {
-		this.accountNumber = account.getAccountNumber();
-		this.balance = account.getBalance();
-		this.customer =  (Customer) account.getCustomer();
-		this.createdDate = account.getCreatedDate();
-	}
-	
+
 	public AccountSpecialDTO(SpecialAccount account) {
 		this.accountNumber = account.getAccountNumber();
 		this.balance = account.getBalance();

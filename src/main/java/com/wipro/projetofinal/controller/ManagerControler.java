@@ -1,37 +1,38 @@
 package com.wipro.projetofinal.controller;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.wipro.projetofinal.dto.AccountChekingDTO;
 import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.CreditCard;
-import com.wipro.projetofinal.entities.Customer;
 import com.wipro.projetofinal.entities.Manager;
 import com.wipro.projetofinal.entities.SpecialAccount;
-import com.wipro.projetofinal.repository.CheckingAccountRepository;
-import com.wipro.projetofinal.repository.SpecialAccountRepository;
-import com.wipro.projetofinal.service.CustomerService;
 import com.wipro.projetofinal.service.ManageService;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/managers")
 @CrossOrigin("*")
 public class ManagerControler {
 
-	@Autowired
-	private CustomerService customerService;
 
 	@Autowired
 	private ManageService manageService;
@@ -82,7 +83,7 @@ public class ManagerControler {
 
 	@PostMapping("/specialAccount/{registration}")
 	public ResponseEntity<AccountSpecialDTO> salvarSpecialAccount(@PathVariable String registration,
-			@RequestBody SpecialAccount account) {
+			@RequestBody SpecialAccount account)throws Exception  {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveSpecialAccount(registration, account));
 	}
 
@@ -95,7 +96,7 @@ public class ManagerControler {
 
 	@PutMapping("/specialAccount/{registration}/{accountNumber}")
 	public ResponseEntity<SpecialAccount> updateSpecial(@PathVariable String registration,
-			@PathVariable String accountNumber, @RequestBody SpecialAccount updateSa) {
+			@PathVariable String accountNumber, @RequestBody SpecialAccount updateSa)throws Exception  {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(manageService.updateByAccountNumberSpecial(registration, accountNumber, updateSa));
 	}
@@ -108,13 +109,13 @@ public class ManagerControler {
 	}
 
 	@DeleteMapping("/checkingAccount/{registration}/{accountNumber}")
-	public ResponseEntity<Void> deleteChecking(@PathVariable String registration, @PathVariable String accountNumber) {
+	public ResponseEntity<Void> deleteChecking(@PathVariable String registration, @PathVariable String accountNumber)throws Exception  {
 		manageService.deleteAccountChecking(registration, accountNumber);
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/specialAccount/{registration}/{accountNumber}")
-	public ResponseEntity<Void> deleteSpecial(@PathVariable String registration, @PathVariable String accountNumber) {
+	public ResponseEntity<Void> deleteSpecial(@PathVariable String registration, @PathVariable String accountNumber)throws Exception  {
 		manageService.deleteAccountSpecial(registration, accountNumber);
 		return ResponseEntity.noContent().build();
 	}
