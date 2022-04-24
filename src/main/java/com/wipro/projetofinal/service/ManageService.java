@@ -21,6 +21,7 @@ import com.wipro.projetofinal.repository.CheckingAccountRepository;
 import com.wipro.projetofinal.repository.CustomerRepository;
 import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
+import com.wipro.projetofinal.service.exeption.AlreadExistException;
 import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
 import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 
@@ -195,28 +196,29 @@ public class ManageService {
 		}
 	}
 
-	public CheckingAccount updateByAccountNumberChecking(String registration, String number, CheckingAccount updateCa) {
-		Manager manager = managerRepository.findByRegistration(registration);
-		if (manager != null) {
-			CheckingAccount cadb = checkingAccountRepository.findByAccountNumber(number);
-			cadb.setCustomer(updateCa.getCustomer());
-			cadb.setCreditCard(updateCa.getCreditCard());
-			checkingAccountRepository.save(cadb);
-			return cadb;
-		} else {
-			throw new NullPointerException("Matrícula de Gerente inexistente");
-		}
-	}
+	public Customer updateCustomer(String registration, Customer customerUpdate) {
 
-	public SpecialAccount updateByAccountNumberSpecial(String registration, String number, SpecialAccount updateSa) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if (manager != null) {
-			SpecialAccount cadb = specialAccountRepository.findByAccountNumber(number);
-			cadb.setCustomer(updateSa.getCustomer());
-			cadb.setCreditCard(updateSa.getCreditCard());
-			cadb.setSpecialLimit(updateSa.getSpecialLimit());
-			specialAccountRepository.save(cadb);
-			return cadb;
+			String customerCpf = customerUpdate.getCpf();
+			String customerEmail = customerUpdate.getEmail();
+
+			Customer ctm = customerRepository.findByCpf(customerCpf);
+			
+			if (ctm == null || ctm.equals(customerUpdate)) {
+
+				Customer ctmEmail = customerRepository.findByEmail(customerEmail);
+
+				if (ctmEmail == null || ctmEmail.equals(customerUpdate)) {
+					return customerRepository.save(customerUpdate);
+				} else {
+					throw new AlreadExistException(customerEmail);
+				}
+
+			} else {
+				throw new AlreadExistException(customerCpf);
+			}
+
 		} else {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
 		}
@@ -233,7 +235,7 @@ public class ManageService {
 		}
 	}
 
-	public Account activateCard(String registration, String number, CreditCard card) {
+	public Account updateCreditCard(String registration, String number, CreditCard card) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if (manager != null) {
 			Account account = getAccount(number);

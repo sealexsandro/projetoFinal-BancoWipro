@@ -24,6 +24,7 @@ import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.CheckingAccount;
 import com.wipro.projetofinal.entities.CreditCard;
+import com.wipro.projetofinal.entities.Customer;
 import com.wipro.projetofinal.entities.Manager;
 import com.wipro.projetofinal.entities.SpecialAccount;
 import com.wipro.projetofinal.service.ManageService;
@@ -86,26 +87,20 @@ public class ManagerControler {
 			@RequestBody SpecialAccount account)throws Exception  {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveSpecialAccount(registration, account));
 	}
-
-	@PutMapping("/checkingAccount/{registration}/{accountNumber}")
-	public ResponseEntity<CheckingAccount> updateChecking(@PathVariable String registration,
-			@PathVariable String accountNumber, @RequestBody @Valid CheckingAccount updateCa) throws Exception {
+	
+	
+	
+	@PutMapping("/customer/{registration}")
+	public ResponseEntity<Customer> updateChecking(@PathVariable String registration, @RequestBody @Valid Customer customerUpdate) throws Exception {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(manageService.updateByAccountNumberChecking(registration, accountNumber, updateCa));
+				.body(manageService.updateCustomer(registration, customerUpdate));
 	}
-
-	@PutMapping("/specialAccount/{registration}/{accountNumber}")
-	public ResponseEntity<SpecialAccount> updateSpecial(@PathVariable String registration,
-			@PathVariable String accountNumber, @RequestBody SpecialAccount updateSa)throws Exception  {
-		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(manageService.updateByAccountNumberSpecial(registration, accountNumber, updateSa));
-	}
-
+	
 	@PutMapping("/activateCard/{registration}/{accountNumber}")
 	public ResponseEntity<Account> activateCard(@PathVariable String registration, @PathVariable String accountNumber,
 			@RequestBody CreditCard creditCard) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(manageService.activateCard(registration, accountNumber, creditCard));
+				.body(manageService.updateCreditCard(registration, accountNumber, creditCard));
 	}
 
 	@DeleteMapping("/checkingAccount/{registration}/{accountNumber}")

@@ -27,12 +27,12 @@ public abstract class User implements Serializable{
 	protected String name;
 	
 	@CPF(message = "CPF Inválido!")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String cpf;
 	
 	@NotBlank(message = "Email é obrigatório!")
 	@Email(message = "Email Inválido!")
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	protected String email;
 	
 	@NotBlank(message = "Senha é obrigatório!")

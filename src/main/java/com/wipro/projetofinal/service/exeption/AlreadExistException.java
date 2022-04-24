@@ -2,7 +2,9 @@ package com.wipro.projetofinal.service.exeption;
 
 public class AlreadExistException extends RuntimeException {
 
-	public AlreadExistException() {
-		super("Entidade com esses dados já existe!");
+	private static final long serialVersionUID = 1L;
+
+	public AlreadExistException(String dado) {
+		super("Cliente com esse dado:  "+ dado + " já existe!");
 	}
 }
