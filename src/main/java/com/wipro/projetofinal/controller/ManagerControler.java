@@ -34,7 +34,6 @@ import com.wipro.projetofinal.service.ManageService;
 @CrossOrigin("*")
 public class ManagerControler {
 
-
 	@Autowired
 	private ManageService manageService;
 
@@ -71,7 +70,7 @@ public class ManagerControler {
 	}
 
 	@GetMapping("/specialAccount/{registration}")
-	public ResponseEntity<List<SpecialAccount>> getAllSpecial(@PathVariable String registration) throws Exception  {
+	public ResponseEntity<List<SpecialAccount>> getAllSpecial(@PathVariable String registration) throws Exception {
 		List<SpecialAccount> list = manageService.findAllSpecial(registration);
 		return ResponseEntity.ok().body(list);
 	}
@@ -84,18 +83,17 @@ public class ManagerControler {
 
 	@PostMapping("/specialAccount/{registration}")
 	public ResponseEntity<AccountSpecialDTO> salvarSpecialAccount(@PathVariable String registration,
-			@RequestBody SpecialAccount account)throws Exception  {
+			@RequestBody SpecialAccount account) throws Exception {
 		return ResponseEntity.status(HttpStatus.CREATED).body(manageService.saveSpecialAccount(registration, account));
 	}
-	
-	
-	
+
 	@PutMapping("/customer/{registration}")
-	public ResponseEntity<Customer> updateChecking(@PathVariable String registration, @RequestBody @Valid Customer customerUpdate) throws Exception {
+	public ResponseEntity<Customer> updateCustomer(@PathVariable String registration,
+			@RequestBody @Valid Customer customerUpdate) throws Exception {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(manageService.updateCustomer(registration, customerUpdate));
 	}
-	
+
 	@PutMapping("/activateCard/{registration}/{accountNumber}")
 	public ResponseEntity<Account> activateCard(@PathVariable String registration, @PathVariable String accountNumber,
 			@RequestBody CreditCard creditCard) {
@@ -104,13 +102,15 @@ public class ManagerControler {
 	}
 
 	@DeleteMapping("/checkingAccount/{registration}/{accountNumber}")
-	public ResponseEntity<Void> deleteChecking(@PathVariable String registration, @PathVariable String accountNumber)throws Exception  {
+	public ResponseEntity<Void> deleteChecking(@PathVariable String registration, @PathVariable String accountNumber)
+			throws Exception {
 		manageService.deleteAccountChecking(registration, accountNumber);
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/specialAccount/{registration}/{accountNumber}")
-	public ResponseEntity<Void> deleteSpecial(@PathVariable String registration, @PathVariable String accountNumber)throws Exception  {
+	public ResponseEntity<Void> deleteSpecial(@PathVariable String registration, @PathVariable String accountNumber)
+			throws Exception {
 		manageService.deleteAccountSpecial(registration, accountNumber);
 		return ResponseEntity.noContent().build();
 	}

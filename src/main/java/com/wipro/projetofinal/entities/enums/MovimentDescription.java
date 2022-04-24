@@ -2,11 +2,10 @@ package com.wipro.projetofinal.entities.enums;
 
 public enum MovimentDescription {
 
-	WITHDRAW(0),
-	DEPOSIT(1),
-	TRANSFER_SENT(2),
-	TRANSFER_RECEIVED(3);
-
+	SAQUE(0),
+	DEPOSITO(1),
+	TRANSFERENCIA_ENVIADA(2),
+	TRANSFERENCIA_RECEBIDA(3);
 
 	private Integer code;
 

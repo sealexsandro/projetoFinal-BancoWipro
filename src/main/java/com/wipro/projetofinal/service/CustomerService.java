@@ -49,7 +49,7 @@ public class CustomerService {
 			account.deposit(value);
 
 			// Guardando a movimentação de deposito na conta
-			Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.DEPOSIT);
+			Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.DEPOSITO);
 			account.addMoviment(moviment);
 
 			// Mandando o repository salvar
@@ -70,7 +70,7 @@ public class CustomerService {
 					account.withdraw(value);
 
 					// Guardando a movimentação de conta corrente
-					Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.WITHDRAW);
+					Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.SAQUE);
 					account.addMoviment(moviment);
 
 					// Mandando o repository salvar
@@ -86,7 +86,7 @@ public class CustomerService {
 					specialAccount.withdraw(value);
 
 					// Guardando a movimentação de conta Especial
-					Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.WITHDRAW);
+					Moviment moviment = new Moviment(value, account.getAccountNumber(), MovimentDescription.SAQUE);
 					account.addMoviment(moviment);
 
 					// Mandando o repository salvar
@@ -117,7 +117,7 @@ public class CustomerService {
 
 				// Guardando a movimentação na conta origem
 				Moviment movimentOrigin = new Moviment(value, originAcc.getAccountNumber(), destinationAccount,
-						MovimentDescription.TRANSFER_SENT);
+						MovimentDescription.TRANSFERENCIA_ENVIADA);
 				originAcc.addMoviment(movimentOrigin);
 
 				// Mandando o repository salvar as atualizaçoes da conta origem
@@ -125,7 +125,7 @@ public class CustomerService {
 
 				// Guardando a movimentação na conta Destino
 				Moviment movimentDestination = new Moviment(value, originAcc.getAccountNumber(), destinationAccount,
-						MovimentDescription.TRANSFER_RECEIVED);
+						MovimentDescription.TRANSFERENCIA_RECEBIDA);
 				destinationAcc.addMoviment(movimentDestination);
 
 				// Mandando o repository salvar as atualizaçoes da conta destino
