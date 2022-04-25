@@ -7,8 +7,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.wipro.projetofinal.ProjetofinalWiproApplication;
 import com.wipro.projetofinal.dto.AccountChekingDTO;
 import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
@@ -27,7 +32,11 @@ import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 
 @Service
 public class ManageService {
+	
 
+
+	private final PasswordEncoder enconder;
+	
 	@Autowired
 	private ManagerRepository managerRepository;
 
@@ -39,26 +48,67 @@ public class ManageService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	
+	public ManageService(PasswordEncoder enconder, ManagerRepository managerRepository,
+			CustomerRepository customerRepository) {
+		super();
+		this.enconder = enconder;
+		this.managerRepository = managerRepository;
+		this.customerRepository = customerRepository;
+	}
+	
+	
 
 	public Manager saveManager(Manager manager) {
+		manager.setPassword(enconder.encode(manager.getPassword()));
 		return managerRepository.save(manager);
+
 	}
 
+	public String login(String email, String password) {
+		Manager opManager = managerRepository.findByEmail(email);
+		
+		if(opManager == null) {
+			return "Usuário não encontrado";
+		}else {
+		
+			boolean valid = false;
+		valid = enconder.matches(password, opManager.getPassword());
+		
+		if(valid) {
+			return "Login efetuado com sucesso !!";
+		} else {
+			return "Login ou senha inválidos.";
+		}
+		}
+		
+		
+		
+	}
+		
+	
 	public AccountChekingDTO saveCheckingAccount(String registration, CheckingAccount account) {
-
+		
 		Manager manager = managerRepository.findByRegistration(registration);
-
-		if (manager != null) { // Se existir esse registro eu consigo entrar no fluxo abaixo.
+		
+		if (manager != null) { 
+			
+			// Se existir esse registro eu consigo entrar no fluxo abaixo.
 			account.setCreatedDate(Instant.now());
 			account.setAccountNumber();
-
-			String customerCpf = account.getCustomer().getCpf(); // Pego o cpf do Customer mandado pelo JSON
+			
+			String customerCpf = account.getCustomer().getCpf(); 
+				// Pego o cpf do Customer mandado pelo JSON
+			
 			Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
-
+			account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
 			if (checkingAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com esse
 																				// Customer ñ é pra deixar salvar
 				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
-																			// salva a Account e descartar o customer
+																	// salva a Account e descartar o customer
+					
+					
 					CheckingAccount checkingAccount = checkingAccountRepository.save(account);
 					AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
 					return accountDTO;
@@ -86,14 +136,17 @@ public class ManageService {
 
 			String customerCpf = account.getCustomer().getCpf(); // Pego o cpf do Customer mandado pelo JSON
 			Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
+			account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
 			if (specialAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com esse
 																				// Customer ñ é pra deixar salvar
 				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
 																			// salva a Account e descartar o customer
+					
 					SpecialAccount specialAccount = specialAccountRepository.save(account);
 					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
 					return accountDTO;
 				} else {
+					
 					account.setCustomer(customer);
 					SpecialAccount specialAccount = specialAccountRepository.save(account);
 					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
@@ -202,6 +255,7 @@ public class ManageService {
 		if (manager != null) {
 			String customerCpf = customerUpdate.getCpf();
 			String customerEmail = customerUpdate.getEmail();
+			customerUpdate.setPassword(enconder.encode(customerUpdate.getPassword()));
 
 			Customer ctm = customerRepository.findByCpf(customerCpf);
 			
@@ -250,5 +304,7 @@ public class ManageService {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
 		}
 	}
+
+	
 
 }
