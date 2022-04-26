@@ -28,6 +28,7 @@ import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
 import com.wipro.projetofinal.service.exeption.AlreadExistException;
 import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
+import com.wipro.projetofinal.service.exeption.InvalidValueException;
 import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 
 @Service
@@ -60,15 +61,20 @@ public class ManageService {
 	
 	
 
-	public Manager saveManager(Manager manager) {
-		manager.setPassword(enconder.encode(manager.getPassword()));
-		return managerRepository.save(manager);
+	public Manager saveManager(Manager manager) throws Exception {
+		if(manager.getPassword().length() >= 6 
+				&& manager.getPassword().length() <= 200  ) {
+			manager.setPassword(enconder.encode(manager.getPassword()));
+			return managerRepository.save(manager);
+		}
+		else {
+			throw new InvalidValueException("Senha dever estar entre 6 a 200 caracteres");
+		}
 
 	}
 
 	public String login(String email, String password) {
 		Manager opManager = managerRepository.findByEmail(email);
-		
 		if(opManager == null) {
 			return "Usuário não encontrado";
 		}else {
@@ -91,8 +97,8 @@ public class ManageService {
 	public AccountChekingDTO saveCheckingAccount(String registration, CheckingAccount account) {
 		
 		Manager manager = managerRepository.findByRegistration(registration);
-		
-		if (manager != null) { 
+		if ((account.getCustomer().getPassword().length() >= 6 && account.getCustomer().getPassword().length() <= 200)) {
+		if (manager != null ) { 
 			
 			// Se existir esse registro eu consigo entrar no fluxo abaixo.
 			account.setCreatedDate(Instant.now());
@@ -126,10 +132,14 @@ public class ManageService {
 		} else {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
 		}
+		}else {
+			throw new InvalidValueException("Senha deve estar entre 6 a 200 caracteres");
+		}
 	}
 
 	public AccountSpecialDTO saveSpecialAccount(String registration, SpecialAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
+		if((account.getCustomer().getPassword().length() >= 6 && account.getCustomer().getPassword().length() <= 200  )) {
 		if (manager != null) {
 			account.setAccountNumber();
 			account.setCreatedDate(Instant.now());
@@ -159,6 +169,9 @@ public class ManageService {
 
 		} else {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
+		}
+		} else {
+			throw new InvalidValueException("Senha deve estar entre 6 a 200 caracteres");
 		}
 	}
 
