@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -33,7 +34,8 @@ public abstract class Account implements Serializable {
 
 	protected String accountNumber;
 	protected Double balance;
-
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // exclui o user relacionado a Account no db.
 	protected Customer customer;
 
