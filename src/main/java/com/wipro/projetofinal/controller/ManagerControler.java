@@ -98,7 +98,14 @@ public class ManagerControler {
 	public ResponseEntity<Account> activateCard(@PathVariable String registration, @PathVariable String accountNumber,
 			@RequestBody CreditCard creditCard) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(manageService.updateCreditCard(registration, accountNumber, creditCard));
+				.body(manageService.createNewCreditCard(registration, accountNumber, creditCard));
+	}
+
+	@PutMapping("/updateCard/{registration}/{accountNumber}")
+	public ResponseEntity<Account> updateCard(@PathVariable String registration, @PathVariable String accountNumber,
+			@RequestBody CreditCard creditCard) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(manageService.updateCreditCardLimit(registration, accountNumber, creditCard));
 	}
 
 	@DeleteMapping("/checkingAccount/{registration}/{accountNumber}")
