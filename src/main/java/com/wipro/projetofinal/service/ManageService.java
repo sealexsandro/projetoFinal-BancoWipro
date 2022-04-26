@@ -258,7 +258,7 @@ public class ManageService {
 			customerUpdate.setPassword(enconder.encode(customerUpdate.getPassword()));
 
 			Customer ctm = customerRepository.findByCpf(customerCpf);
-			
+
 			if (ctm == null || ctm.equals(customerUpdate)) {
 
 				Customer ctmEmail = customerRepository.findByEmail(customerEmail);
@@ -289,7 +289,7 @@ public class ManageService {
 		}
 	}
 
-	public Account updateCreditCard(String registration, String number, CreditCard card) {
+	public Account createNewCreditCard(String registration, String number, CreditCard card) {
 		Manager manager = managerRepository.findByRegistration(registration);
 		if (manager != null) {
 			Account account = getAccount(number);
@@ -304,7 +304,26 @@ public class ManageService {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
 		}
 	}
+	public Account updateCreditCardLimit(String registration, String number, CreditCard card) {
+		Manager manager = managerRepository.findByRegistration(registration);
 
-	
+		if (manager != null) {
+			Account account = getAccount(number);
+			CreditCard creditCard = account.getCreditCard();
+
+			creditCard.setCardLevel(card.getCardLevel());
+			creditCard.setCreditLimit(card.getCreditLimit());
+
+			account.setCreditCard(creditCard);
+
+			if (account.getClass().getName().equals(CheckingAccount.class.getName())) {
+				return checkingAccountRepository.save((CheckingAccount) account);
+			} else {
+				return specialAccountRepository.save((SpecialAccount) account);
+			}
+		} else {
+			throw new NullPointerException("Matrícula de Gerente inexistente");
+		}
+	}
 
 }
