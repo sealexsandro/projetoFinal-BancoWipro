@@ -2,6 +2,7 @@ package com.wipro.projetofinal.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -9,16 +10,17 @@ import java.util.Random;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
 public abstract class Account implements Serializable {
@@ -27,29 +29,30 @@ public abstract class Account implements Serializable {
 
 	@Id
 	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2",strategy = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	String id;
 
 	protected String accountNumber;
 	protected Double balance;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o user relacionado a Account no db.
-    protected Customer customer;
-    
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui todas as movimentacoes relacionadas a Account no db.
-	protected List<Moviment> moviment;
 	
-	@JsonFormat(shape= JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy HH:mm:ss",timezone = "GMT-3")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // exclui o user relacionado a Account no db.
+	protected Customer customer;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // exclui todas as movimentacoes relacionadas a																// Account no db.
+	protected List<Moviment> moviment;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "GMT-3")
 	protected Instant createdDate;
 
-
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//exclui o cartão relacionado a Account no db.
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // exclui o cartão relacionado a Account no db.
 	@JoinColumn(name = "credit_id")
 	protected CreditCard creditCard;
 
 	public Account() {
 	}
 
+	
 	public Account(Double balance) {
 		this.balance = balance;
 	}
@@ -70,15 +73,16 @@ public abstract class Account implements Serializable {
 		return moviment;
 	}
 
-	public Instant getCreatedDate(){
-		return  this.createdDate;
-	}
-	public void setCreatedDate(Instant momento){
-		this.createdDate =  momento;
+	public Instant getCreatedDate() {
+		return this.createdDate;
 	}
 
-	public void setAccountNumber(){
-		this.accountNumber = randomNumberAccount() ;
+	public void setCreatedDate(Instant momento) {
+		this.createdDate = momento;
+	}
+
+	public void setAccountNumber() {
+		this.accountNumber = randomNumberAccount();
 	}
 
 	public Customer getCustomer() {
@@ -88,19 +92,28 @@ public abstract class Account implements Serializable {
 	public CreditCard getCreditCard() {
 		return creditCard;
 	}
-	
 
+	public void addMoviment(Moviment moviment) {
+		if (this.moviment == null) {
+			this.moviment = new ArrayList<Moviment>();
+		}
+		this.moviment.add(moviment);
+	}
 
-	public void updateBalance(Double value) {
+	public void deposit(Double value) {
 		this.balance += value;
+	}
+
+	public void withdraw(double amount) {
+		this.balance -= amount;
 	}
 
 	public String randomNumberAccount() {
 		String numberAccount = "";
 		Random random = new Random();
-			for (int j = 0; j < 15; j++) {
-				numberAccount += Integer.toString(random.nextInt(10));
-			}
+		for (int j = 0; j < 15; j++) {
+			numberAccount += Integer.toString(random.nextInt(10));
+		}
 		return numberAccount;
 	}
 
@@ -128,9 +141,5 @@ public abstract class Account implements Serializable {
 	public void setCreditCard(CreditCard creditCard) {
 		this.creditCard = creditCard;
 	}
-	
-	
-	
-	
 
 }
