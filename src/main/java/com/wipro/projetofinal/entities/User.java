@@ -26,6 +26,7 @@ public abstract class User implements Serializable{
 	@NotBlank(message = "Nome é obrigatório!")
 	protected String name;
 	
+	@NotBlank(message = "CPF é obrigatório!")
 	@CPF(message = "CPF Inválido!")
     @Column(nullable = false)
     private String cpf;
@@ -35,10 +36,10 @@ public abstract class User implements Serializable{
 	@Column(nullable = false)
 	protected String email;
 	
-	@Size(min = 6, max = 200)
-	@Column(length=200)
 	@NotBlank(message = "Senha é obrigatório!")
-	protected String passwordUser;
+	@Size(min = 6, max = 200)
+	@Column(length=200)	
+	protected String password;
 	
 
 	public User() {
@@ -48,7 +49,7 @@ public abstract class User implements Serializable{
 		this.name = name;
 		this.cpf = cpf;
 		this.email = email;
-		this.passwordUser = password;
+		this.password = password;
 		setCpf(cpf);
 	}
 
@@ -74,11 +75,11 @@ public abstract class User implements Serializable{
 	}
 
 	public String getPassword() {
-		return passwordUser;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		this.passwordUser = password;
+		this.password = password;
 	}
 
 	public Long getId() {
