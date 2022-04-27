@@ -60,9 +60,18 @@ public class ManageService {
 	
 	
 
-	public Manager saveManager(Manager manager) {
-		manager.setPassword(enconder.encode(manager.getPassword()));
-		return managerRepository.save(manager);
+	public Manager saveManager(Manager manager) throws Exception {
+		if(manager.getPassword().isEmpty() == false 
+				|| manager.getPassword().length() >= 6 
+				&& manager.getPassword().length() <= 200 ) {
+			manager.setPassword(enconder.encode(manager.getPassword()));
+			return managerRepository.save(manager);
+		}
+		else {
+			throw new Exception("Senha dever estar entre 6 a 200 caracteres");
+		}
+		
+		
 
 	}
 
