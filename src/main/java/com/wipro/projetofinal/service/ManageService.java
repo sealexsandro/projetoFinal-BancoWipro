@@ -53,6 +53,7 @@ public class ManageService {
 	}
 
 	public Manager saveManager(Manager manager) throws Exception {
+
 		if (manager.getPassword().length() >= 6 && manager.getPassword().length() <= 200) {
 
 			Manager managerBank = managerRepository.findManagerByCpfOrByEmailOrByRegistration(manager.getCpf(),
