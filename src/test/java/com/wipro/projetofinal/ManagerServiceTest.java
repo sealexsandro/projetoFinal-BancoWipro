@@ -3,6 +3,7 @@ package com.wipro.projetofinal;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.service.ManageService;
 import com.wipro.projetofinal.service.exeption.AlreadExistException;
 import com.wipro.projetofinal.service.exeption.InvalidValueException;
+
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -46,6 +48,7 @@ public class ManagerServiceTest {
 		Manager manager = new Manager("Maria Joaquina", "30611298040", "mjoao@gmail.com", "1232345", "12abc456");		
 		//assertThrows(Exception.class, () -> managerService.saveManager(manager));
 		managerService.saveManager(manager);
+
 	}
 	
 	//forçar senha incorreta
