@@ -34,8 +34,6 @@ public class CreditCard implements Serializable {
 	private CardLevel cardLevel;
 
 	private Boolean ativo;
-	
-	
 
 	public CreditCard() {
 		this.cardNumber = randomNumberCard();

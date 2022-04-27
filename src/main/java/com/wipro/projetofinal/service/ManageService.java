@@ -7,13 +7,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wipro.projetofinal.ProjetofinalWiproApplication;
 import com.wipro.projetofinal.dto.AccountChekingDTO;
 import com.wipro.projetofinal.dto.AccountSpecialDTO;
 import com.wipro.projetofinal.entities.Account;
@@ -28,15 +24,14 @@ import com.wipro.projetofinal.repository.ManagerRepository;
 import com.wipro.projetofinal.repository.SpecialAccountRepository;
 import com.wipro.projetofinal.service.exeption.AlreadExistException;
 import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
+import com.wipro.projetofinal.service.exeption.InvalidValueException;
 import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
 
 @Service
 public class ManageService {
-	
-
 
 	private final PasswordEncoder enconder;
-	
+
 	@Autowired
 	private ManagerRepository managerRepository;
 
@@ -48,8 +43,7 @@ public class ManageService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
-	
+
 	public ManageService(PasswordEncoder enconder, ManagerRepository managerRepository,
 			CustomerRepository customerRepository) {
 		super();
@@ -57,117 +51,134 @@ public class ManageService {
 		this.managerRepository = managerRepository;
 		this.customerRepository = customerRepository;
 	}
-	
-	
 
 	public Manager saveManager(Manager manager) throws Exception {
-		if(manager.getPassword().isEmpty() == false 
-				|| manager.getPassword().length() >= 6 
-				&& manager.getPassword().length() <= 200 ) {
+
+		if (manager.getPassword().length() >= 6 && manager.getPassword().length() <= 200) {
+
+			Manager managerBank = managerRepository.findManagerByCpfOrByEmailOrByRegistration(manager.getCpf(),
+					manager.getEmail(), manager.getRegistration());
+
+			if (managerBank != null) {
+				if (manager.getCpf().equals(managerBank.getCpf())) {
+					throw new AlreadExistException("Manager com esse CPF já existe!");
+				} else if (manager.getEmail().equals(managerBank.getEmail())) {
+					throw new AlreadExistException("Manager com esse Email já existe!");
+				} else if (manager.getRegistration().equals(managerBank.getRegistration())) {
+					throw new AlreadExistException("Manager com essa Matrícula já existe!");
+				}
+			}
 			manager.setPassword(enconder.encode(manager.getPassword()));
 			return managerRepository.save(manager);
+
+		} else {
+			throw new InvalidValueException("Senha dever estar entre 6 a 200 caracteres");
 		}
-		else {
-			throw new Exception("Senha dever estar entre 6 a 200 caracteres");
-		}
-		
-		
 
 	}
 
 	public String login(String email, String password) {
 		Manager opManager = managerRepository.findByEmail(email);
-		
-		if(opManager == null) {
+		if (opManager == null) {
 			return "Usuário não encontrado";
-		}else {
-		
-			boolean valid = false;
-		valid = enconder.matches(password, opManager.getPassword());
-		
-		if(valid) {
-			return "Login efetuado com sucesso !!";
 		} else {
-			return "Login ou senha inválidos.";
+
+			boolean valid = false;
+			valid = enconder.matches(password, opManager.getPassword());
+
+			if (valid) {
+				return "Login efetuado com sucesso !!";
+			} else {
+				return "Login ou senha inválidos.";
+			}
 		}
-		}
-		
-		
-		
+
 	}
-		
-	
+
 	public AccountChekingDTO saveCheckingAccount(String registration, CheckingAccount account) {
-		
+
 		Manager manager = managerRepository.findByRegistration(registration);
-		
-		if (manager != null) { 
-			
-			// Se existir esse registro eu consigo entrar no fluxo abaixo.
-			account.setCreatedDate(Instant.now());
-			account.setAccountNumber();
-			
-			String customerCpf = account.getCustomer().getCpf(); 
+		if ((account.getCustomer().getPassword().length() >= 6
+				&& account.getCustomer().getPassword().length() <= 200)) {
+			if (manager != null) {
+
+				// Se existir esse registro eu consigo entrar no fluxo abaixo.
+				account.setCreatedDate(Instant.now());
+				account.setAccountNumber();
+
+				String customerCpf = account.getCustomer().getCpf();
 				// Pego o cpf do Customer mandado pelo JSON
-			
-			Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
-			account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
-			if (checkingAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com esse
-																				// Customer ñ é pra deixar salvar
-				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
-																	// salva a Account e descartar o customer
-					
-					
-					CheckingAccount checkingAccount = checkingAccountRepository.save(account);
-					AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
-					return accountDTO;
+
+				Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
+				account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
+				if (checkingAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com
+																					// esse
+																					// Customer ñ é pra deixar salvar
+					if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf,
+																				// so
+						// salva a Account e descartar o customer
+
+						CheckingAccount checkingAccount = checkingAccountRepository.save(account);
+						AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
+						return accountDTO;
+					} else {
+						account.setCustomer(customer);
+						CheckingAccount checkingAccount = checkingAccountRepository.save(account);
+						AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
+						return accountDTO;
+					}
+
 				} else {
-					account.setCustomer(customer);
-					CheckingAccount checkingAccount = checkingAccountRepository.save(account);
-					AccountChekingDTO accountDTO = new AccountChekingDTO(checkingAccount);
-					return accountDTO;
+					throw new AlreadyExistAccountByCpf(customerCpf);
 				}
 
 			} else {
-				throw new AlreadyExistAccountByCpf(customerCpf);
+				throw new NullPointerException("Matrícula de Gerente inexistente");
 			}
-
 		} else {
-			throw new NullPointerException("Matrícula de Gerente inexistente");
+			throw new InvalidValueException("Senha deve estar entre 6 a 200 caracteres");
 		}
 	}
 
 	public AccountSpecialDTO saveSpecialAccount(String registration, SpecialAccount account) {
 		Manager manager = managerRepository.findByRegistration(registration);
-		if (manager != null) {
-			account.setAccountNumber();
-			account.setCreatedDate(Instant.now());
+		if ((account.getCustomer().getPassword().length() >= 6
+				&& account.getCustomer().getPassword().length() <= 200)) {
+			if (manager != null) {
+				account.setAccountNumber();
+				account.setCreatedDate(Instant.now());
 
-			String customerCpf = account.getCustomer().getCpf(); // Pego o cpf do Customer mandado pelo JSON
-			Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
-			account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
-			if (specialAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com esse
-																				// Customer ñ é pra deixar salvar
-				if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf, so
-																			// salva a Account e descartar o customer
-					
-					SpecialAccount specialAccount = specialAccountRepository.save(account);
-					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
-					return accountDTO;
+				String customerCpf = account.getCustomer().getCpf(); // Pego o cpf do Customer mandado pelo JSON
+				Customer customer = customerRepository.findByCpf(customerCpf); // Pego o Customer associado ao cpf acima
+				account.getCustomer().setPassword(enconder.encode(account.getCustomer().getPassword()));
+				if (specialAccountRepository.findByCustomer(customer) == null) { // Se existir um checkingAccount com
+																					// esse
+																					// Customer ñ é pra deixar salvar
+					if (customerRepository.findByCpf(customerCpf) == null) { // Se já existir um Customer com esse cpf,
+																				// so
+																				// salva a Account e descartar o
+																				// customer
+
+						SpecialAccount specialAccount = specialAccountRepository.save(account);
+						AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
+						return accountDTO;
+					} else {
+
+						account.setCustomer(customer);
+						SpecialAccount specialAccount = specialAccountRepository.save(account);
+						AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
+						return accountDTO;
+					}
+
 				} else {
-					
-					account.setCustomer(customer);
-					SpecialAccount specialAccount = specialAccountRepository.save(account);
-					AccountSpecialDTO accountDTO = new AccountSpecialDTO(specialAccount);
-					return accountDTO;
+					throw new AlreadyExistAccountByCpf(customerCpf);
 				}
 
 			} else {
-				throw new AlreadyExistAccountByCpf(customerCpf);
+				throw new NullPointerException("Matrícula de Gerente inexistente");
 			}
-
 		} else {
-			throw new NullPointerException("Matrícula de Gerente inexistente");
+			throw new InvalidValueException("Senha deve estar entre 6 a 200 caracteres");
 		}
 	}
 
@@ -275,11 +286,11 @@ public class ManageService {
 				if (ctmEmail == null || ctmEmail.equals(customerUpdate)) {
 					return customerRepository.save(customerUpdate);
 				} else {
-					throw new AlreadExistException(customerEmail);
+					throw new AlreadExistException("Cliente com esse dado:  " + customerEmail + " já existe!");
 				}
 
 			} else {
-				throw new AlreadExistException(customerCpf);
+				throw new AlreadExistException("Cliente com esse dado:  " + customerCpf + " já existe!");
 			}
 
 		} else {
@@ -313,6 +324,7 @@ public class ManageService {
 			throw new NullPointerException("Matrícula de Gerente inexistente");
 		}
 	}
+
 	public Account updateCreditCardLimit(String registration, String number, CreditCard card) {
 		Manager manager = managerRepository.findByRegistration(registration);
 
