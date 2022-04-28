@@ -13,6 +13,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.wipro.projetofinal.entities.Account;
 import com.wipro.projetofinal.entities.CheckingAccount;
+import com.wipro.projetofinal.entities.Moviment;
+import com.wipro.projetofinal.entities.enums.MovimentDescription;
 import com.wipro.projetofinal.service.CustomerService;
 import com.wipro.projetofinal.service.exeption.InvalidValueException;
 import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
@@ -77,10 +79,9 @@ public class CustomerServiceTest {
 	
 	
 	@Test
-	public void deposit_test_failed() throws Exception,InvalidValueException {//teste de falha para deposito
+	public void deposit_test_failed() throws Exception {//teste de falha para deposito
 		double value = 0.0;
-		InvalidValueException invalid = new InvalidValueException(value);
-		assertFalse(false);
+		assertThrows(InvalidValueException.class, () -> customer.deposit("478473594143955", value));
 	}
 
 	
@@ -97,23 +98,21 @@ public class CustomerServiceTest {
 		assertTrue(true);
 	}
 	
-	@Test(expected = InvalidValueException.class)
+	@Test
 	public void withdraw_test_failed() throws Exception,InvalidValueException {//teste de falha para saque
 		double value = 0.0;
-		customer.withdraw("276711954579855", value);
+		assertThrows(InvalidValueException.class, () -> customer.withdraw("276711954579855", value));
 
 	}
 	@Test
-	public void withdraw_exception_test_failed() throws Exception,InvalidValueException  {//teste de falha para saque
-		double value = 100000.0;
-		customer.deposit("276711954579855", value);
+	public void withdraw_saldo_insuficiente_checking_account_test_failed() throws InvalidValueException  {//teste de falha para saque
+		double value = 10000000.0;
+		assertThrows(InvalidValueException.class, () ->customer.withdraw("478473594143955", value));
 	}
 	@Test
-	public void withdraw_saldo_insuficiente_test_failed() throws Exception,InvalidValueException {//teste de falha para saque
-		double value = 100000000.0;	
-		InvalidValueException invalid = new InvalidValueException(value);
-		invalid.getMessage();
-		assertFalse(false);
+	public void withdraw_saldo_insuficiente_special_account_test_failed() throws InvalidValueException {//teste de falha para saque
+		double value = 10000000.0;
+		assertThrows(InvalidValueException.class, () ->customer.withdraw("276711954579855", value));
 	}
 	
 	
@@ -131,7 +130,7 @@ public class CustomerServiceTest {
 		assertTrue(true);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void transfer_checking_account_success() throws Exception {
 		double value = 1.0;
 		String accOrigin = "478473594143955";
@@ -139,19 +138,29 @@ public class CustomerServiceTest {
 		Account originAcc = customer.getAccount(accOrigin);
 		Account destinAcc = customer.getAccount(accDestin);
 		
-		customer.transfer(accOrigin, accDestin, value);
-		assertTrue(true);
+		assertThrows(NullPointerException.class, () -> customer.transfer(accOrigin, accDestin, value));
 	}
-	@Test(expected = NullPointerException.class)
-	public void transfer_checking_account_failed() throws Exception, InvalidValueException {
-		double value = 1.0;
-		String accOrigin = "863032057630184";
-		String accDestin = "478473594143955";
+	@Test
+	public void transfer_checking_account_failed(){
+		double value = 100000000.0;
+		String accOrigin = "478473594143955";
+		String accDestin = "863032057630184";
 		Account originAcc = customer.getAccount(accOrigin);
 		Account destinAcc = customer.getAccount(accDestin);
 		
-		customer.transfer(accOrigin, accDestin, value);
-		assertFalse(false);
+		assertThrows(InvalidValueException.class, () -> customer.transfer(accOrigin, accDestin, value));
 		
 	}
+	@Test
+	public void transfer_account_number_invalid_failed2(){
+		double value = 0.0;
+		String accOrigin = "478473594143955";
+		String accDestin = "863032057630184";
+		Account originAcc = customer.getAccount(accOrigin);
+		Account destinAcc = customer.getAccount(accDestin);
+		
+		assertThrows(InvalidValueException.class, () -> customer.transfer(accOrigin, accDestin, value));
+		
+	}
+	
 }
