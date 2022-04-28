@@ -14,15 +14,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.wipro.projetofinal.entities.CheckingAccount;
+import com.wipro.projetofinal.entities.CreditCard;
 import com.wipro.projetofinal.entities.Customer;
 import com.wipro.projetofinal.entities.Manager;
 import com.wipro.projetofinal.entities.SpecialAccount;
+import com.wipro.projetofinal.entities.enums.CardLevel;
 import com.wipro.projetofinal.service.ManageService;
 import com.wipro.projetofinal.service.exeption.AlreadExistException;
 import com.wipro.projetofinal.service.exeption.AlreadyExistAccountByCpf;
 import com.wipro.projetofinal.service.exeption.InvalidValueException;
 import com.wipro.projetofinal.service.exeption.ResourceNotFoundExcception;
-
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -38,8 +39,8 @@ public class ManagerServiceTest {
 
 	// sucesso ao salvar manager
 	@Test
-	public void managerService_save_manager_test() throws Exception {
-		Manager manager = new Manager("Maria Joaquina", "30611298040", "mjoao@gmail.com", "1232345", "12abc456");
+	public void managerService_save_manager_test() throws Exception {// atualizar
+		Manager manager = new Manager("José Augusto", "69263712026", "ja@gmail.com", "1232345", "abcd1");
 		// assertThrows(Exception.class, () -> managerService.saveManager(manager));
 		managerService.saveManager(manager);
 
@@ -77,12 +78,12 @@ public class ManagerServiceTest {
 
 	// forçar sucesso de conta especial
 	@Test
-	public void managerService_save_Special_account_success_test() {
-		String registration = "12abc456";
+	public void managerService_save_Special_account_success_test() {// atualizar
+		String registration = "1m111";
 		Customer customer = new Customer();
-		customer.setName("Fabricio Nogueira");
-		customer.setCpf("41698819072");
-		customer.setEmail("fabricio@email.com");
+		customer.setName("Kakaroto josé");
+		customer.setCpf("87338649340");
+		customer.setEmail("kakaroto@email.com");
 		customer.setPassword("12345678");
 		SpecialAccount account = new SpecialAccount();
 		account.setCustomer(customer);
@@ -92,12 +93,12 @@ public class ManagerServiceTest {
 
 	// forçar sucesso
 	@Test
-	public void managerService_save_Checking_account_success_test() {
-		String registration = "12abc456";
+	public void managerService_save_Checking_account_success_test() {// atualizar
+		String registration = "1m111";
 		Customer customer = new Customer();
-		customer.setName("Fabricio Nogueira");
-		customer.setCpf("74512045023");
-		customer.setEmail("fabricio@email.com");
+		customer.setName("Kuwabara");
+		customer.setCpf("39756826711");
+		customer.setEmail("kuaba@email.com");
 		customer.setPassword("12345678");
 		CheckingAccount account = new CheckingAccount();
 		account.setCustomer(customer);
@@ -192,7 +193,7 @@ public class ManagerServiceTest {
 	// Forçar sucesso ao buscar todas as contas
 	@Test
 	public void managerService_findAllAccounts_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		managerService.findAllAccounts(registration);
 		assertTrue(true);
 	}
@@ -207,7 +208,7 @@ public class ManagerServiceTest {
 	// Forçar sucesso ao buscar todas as contas Correntes
 	@Test
 	public void managerService_findAllChecking_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		managerService.findAllChecking(registration);
 		assertTrue(true);
 	}
@@ -224,7 +225,7 @@ public class ManagerServiceTest {
 	// Forçar sucesso ao buscar todas as contas Especiais
 	@Test
 	public void managerService_findAllSpecial_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		managerService.findAllSpecial(registration);
 		assertTrue(true);
 	}
@@ -241,15 +242,15 @@ public class ManagerServiceTest {
 	// Forçar sucesso ao buscar uma conta corrente pelo seu número
 	@Test
 	public void managerService_findByAccountNumberChecking_test() {
-		String registration = "12abc456";
-		String accountNumber = "490185615332692";
+		String registration = "1m111";
+		String accountNumber = "863032057630184";
 		assertNotNull(managerService.findByAccountNumberChecking(registration, accountNumber));
 	}
 
 	// Forçar erro ao buscar uma conta corrente por um número inexistente
 	@Test
 	public void managerService_findByAccountNumberChecking_NumberInexistent_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		String accountNumber = "111111111111111";
 		assertThrows(ResourceNotFoundExcception.class,
 				() -> managerService.findByAccountNumberChecking(registration, accountNumber));
@@ -267,15 +268,15 @@ public class ManagerServiceTest {
 	// Forçar sucesso ao buscar uma conta especial pelo seu número
 	@Test
 	public void managerService_findByAccountNumberSpecial_test() {
-		String registration = "12abc456";
-		String accountNumber = "120358604235041";
+		String registration = "1m111";
+		String accountNumber = "276711954579855";
 		assertNotNull(managerService.findByAccountNumberSpecial(registration, accountNumber));
 	}
 
 	// Forçar erro ao buscar uma conta especial por um número inexistente
 	@Test
 	public void managerService_findByAccountNumberSpecial_NumberInexistent_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		String accountNumber = "111111111111111";
 		assertThrows(ResourceNotFoundExcception.class,
 				() -> managerService.findByAccountNumberSpecial(registration, accountNumber));
@@ -285,7 +286,7 @@ public class ManagerServiceTest {
 	@Test
 	public void managerService_findByAccountNumberSpecial_ManagerInexistent_test() {
 		String registration = "";
-		String accountNumber = "120358604235041";
+		String accountNumber = "276711954579855";
 		assertThrows(NullPointerException.class,
 				() -> managerService.findByAccountNumberSpecial(registration, accountNumber));
 	}
@@ -293,7 +294,7 @@ public class ManagerServiceTest {
 	// forçar sucesso ao deletar uma conta corrente
 	@Test
 	public void managerService_deleteAccountChecking_success_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		Customer customer = new Customer();
 		customer.setName("Beatriz Dinamarquesa");
 		customer.setCpf("06330856001");
@@ -310,13 +311,13 @@ public class ManagerServiceTest {
 	// Forçar erro ao tentar excluir conta corrente com Matricula de gerente
 	// inexistente
 	@Test
-	public void managerService_deleteAccountChecking_ManagerInexistent_test() {
-		String registrationValid = "12abc456";
+	public void managerService_deleteAccountChecking_ManagerInexistent_test() {// atualizar
+		String registrationValid = "1m111";
 		String registrationInvalid = "";
 		Customer customer = new Customer();
-		customer.setName("Ana Paula");
-		customer.setCpf("51860039057");
-		customer.setEmail("ana@email.com");
+		customer.setName("Big Mom");
+		customer.setCpf("72811441301");
+		customer.setEmail("bimom@email.com");
 		customer.setPassword("12345678");
 		CheckingAccount account = new CheckingAccount();
 		account.setCustomer(customer);
@@ -330,11 +331,11 @@ public class ManagerServiceTest {
 	// forçar sucesso ao deletar uma conta especial
 	@Test
 	public void managerService_deleteAccountSpecial_success_test() {
-		String registration = "12abc456";
+		String registration = "1m111";
 		Customer customer = new Customer();
-		customer.setName("Carla Beatriz");
-		customer.setCpf("69153240030");
-		customer.setEmail("carla@email.com");
+		customer.setName("Nosferatu Pereira");
+		customer.setCpf("52142135064");
+		customer.setEmail("nosfe@email.com");
 		customer.setPassword("12345678");
 		SpecialAccount account = new SpecialAccount();
 		account.setCustomer(customer);
@@ -347,13 +348,13 @@ public class ManagerServiceTest {
 	// Forçar erro ao tentar excluir conta especial com Matricula de gerente
 	// inexistente
 	@Test
-	public void managerService_deleteAccountSpecial_ManagerInexistent_test() {
-		String registrationValid = "12abc456";
+	public void managerService_deleteAccountSpecial_ManagerInexistent_test() {// atualizar
+		String registrationValid = "1m111";
 		String registrationInvalid = "";
 		Customer customer = new Customer();
-		customer.setName("Carla Beatriz");
-		customer.setCpf("69153240030");
-		customer.setEmail("carla@email.com");
+		customer.setName("oioi");
+		customer.setCpf("58574296848");
+		customer.setEmail("oioioii@email.com");
 		customer.setPassword("12345678");
 		SpecialAccount account = new SpecialAccount();
 		account.setCustomer(customer);
@@ -363,4 +364,106 @@ public class ManagerServiceTest {
 				() -> managerService.deleteAccountSpecial(registrationInvalid, account.getAccountNumber()));
 
 	}
+
+	@Test
+	public void managerService_updateCustomer_test_success() {// atualizar
+		String registrationValid = "1m111";
+		Customer customer = new Customer();
+		customer.setId(5L);
+		customer.setName("oioi");
+		customer.setCpf("85959916002");
+		customer.setEmail("aaoii@email.com");
+		customer.setPassword("12345678");
+		assertNotNull(managerService.updateCustomer(registrationValid, customer));
+
+	}
+	@Test
+	public void managerService_updateCustomer_emailEexist_test_failed() {// atualizar
+		String registrationValid = "1m111";
+		Customer customer = new Customer();
+		customer.setId(5L);
+		customer.setName("oioi");
+		customer.setCpf("85959916002");
+		customer.setEmail("jose@gmail.com");
+		customer.setPassword("12345678");
+		assertThrows(AlreadExistException.class, () -> managerService.updateCustomer(registrationValid, customer));
+
+	}
+	@Test
+	public void managerService_updateCustomer_cpfExist_test_failed() {// atualizar
+		String registrationValid = "1m111";
+		Customer customer = new Customer();
+		customer.setId(5L);
+		customer.setName("oioi");
+		customer.setCpf("45119704085");
+		customer.setEmail("jose@gmail.com");
+		customer.setPassword("12345678");
+		assertThrows(AlreadExistException.class, () -> managerService.updateCustomer(registrationValid, customer));
+	}
+	@Test
+	public void managerService_updateCustomer_invalid_registration_test_failed() {// atualizar
+		String registrationValid = "zxcvvvm";
+		Customer customer = new Customer();
+		customer.setId(5L);
+		customer.setName("oioi");
+		customer.setCpf("45119704085");
+		customer.setEmail("jose@gmail.com");
+		customer.setPassword("12345678");
+		assertThrows(NullPointerException.class, () -> managerService.updateCustomer(registrationValid, customer));
+	}
+	@Test
+	public void managerService_checking_account_create_new_credit_card_teste_sucess() {
+		CreditCard creditCard = new CreditCard(300.0, CardLevel.BRONZE);
+		String registration = "1m111";
+		String accountNumber = "863032057630184";
+		
+		assertNotNull(managerService.createNewCreditCard(registration, accountNumber, creditCard));
+		
+	}
+	@Test
+	public void managerService_special_account_create_new_credit_card_test_sucess() {
+		CreditCard creditCard = new CreditCard(300.0, CardLevel.BRONZE);
+		String registration = "1m111";
+		String accountNumber = "276711954579855";
+		
+		assertNotNull(managerService.createNewCreditCard(registration, accountNumber, creditCard));
+		
+	}
+	@Test
+	public void managerService_create_new_credit_card_test_failed() {
+		CreditCard creditCard = new CreditCard(300.0, CardLevel.BRONZE);
+		String registration = "";
+		String accountNumber = "276711954579855";
+		
+		assertThrows(NullPointerException.class, () -> managerService.createNewCreditCard(registration, accountNumber, creditCard));
+		
+	}
+	@Test
+	public void managerService_checking_account_update_limit_credit_card_test_sucess() {
+		CreditCard creditCard = new CreditCard(600.0, CardLevel.PRATA);
+		String registration = "1m111";
+		String accountNumber = "863032057630184";
+		
+		assertNotNull(managerService.updateCreditCardLimit(registration, accountNumber, creditCard));
+		
+	}
+	@Test
+	public void managerService_special_account_update_limit_credit_card_test_sucess() {
+		CreditCard creditCard = new CreditCard(1000.0, CardLevel.OURO);
+		String registration = "1m111";
+		String accountNumber = "276711954579855";
+		
+		assertNotNull(managerService.updateCreditCardLimit(registration, accountNumber, creditCard));
+		
+	}
+	@Test
+	public void managerService_update_limit_credit_card_test_manager_inexistfailed() {
+		CreditCard creditCard = new CreditCard(300.0, CardLevel.BRONZE);
+		String registration = "momom";
+		String accountNumber = "276711954579855";
+		
+		assertThrows(NullPointerException.class, () -> managerService.updateCreditCardLimit(registration, accountNumber, creditCard));
+		
+	}
+	
 }
