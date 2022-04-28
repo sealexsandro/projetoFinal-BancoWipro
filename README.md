@@ -51,7 +51,7 @@ A Estrutura para a construção das classes JAVA foi baseado no padrão MVC(mode
 ### Diagrama do banco de dados:
 O diagrama Entidade Relacionamento é composto por um conjunto de objetos gráficos que visa representar todos os objetos do modelo Entidade-Relacionamento tais como entidades, atributos, atributos chaves, relacionamentos, restrições estruturais, etc. O diagrama ER fornece uma visão lógica do banco de dados, fornecendo um conceito mais generalizado de como estão estruturados os dados de um sistema.
 
-![Diagrama do banco](https://user-images.githubusercontent.com/95596826/165781371-01933190-d8f4-47cf-9c90-acf5f956ba40.PNG)
+![image](https://user-images.githubusercontent.com/95596826/165856755-c099bbb6-fea1-4f24-86f6-efdf8fd01529.png)
 
 
 ## Tecnologias e frameworks utilizados:
@@ -328,5 +328,66 @@ Os endpoints para teste e acesso ao seus métodos HTTPs (GET, POST, PUT e DELETE
   
  ![image](https://user-images.githubusercontent.com/95596826/165834842-9b4b228a-6835-44cd-b364-9d943644a3a6.png)
   
+
+  
+  ## Tratamento de Exceção:
+  O tratamento de exceções da nossa aplicação é feita de diversas maneiras. O package de Exceptions apresenta as exceções das classes de Cliente, Conta, Cartão de  crédito e Transações. 
+  
+  #### 🆘 Buscar conta com número de conta errado:
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165854992-34c8ebbf-139b-47e5-9792-fea3efa7b3ea.png)
+
+
+  #### 🆘 Buscar Extrato com número de conta errado
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165855415-d886cec0-182b-42d2-9f40-7782c77bead1.png)
+
+
+  #### 🆘 Depositar com número de conta errado
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165855541-c703515d-64f6-48b7-8233-98c2676be6b9.png)
+  
+  
+  #### 🆘 Depositar com valor negativo ou zerado
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165855580-49d2be16-8137-4280-a18d-f129fb173b22.png)
+  
+  
+  #### 🆘 Sacar com número de conta inexistente
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165855643-69c6ed69-adc6-49b2-af96-bfed816e1642.png)
+  
+  
+  #### 🆘 Sacar com número de conta inexistente
+
+  ![image](https://user-images.githubusercontent.com/95596826/165855710-378ccdb6-7d32-4570-8355-28a6ead4d4ac.png)
+  
+  
+  #### 🆘 Sacar um valor maior que o saldo existente
+
+  ![image](https://user-images.githubusercontent.com/95596826/165855819-9c058a59-bd7d-4b77-ba9e-8c5a83566107.png)
+
+  
+  #### 🆘 Transferência de valor com a conta  origem inexistente ou a conta destino inexistente
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165855893-e5d4d8a3-9526-49ad-a5af-3a87e814a78c.png)
+  
+  
+  #### 🆘  Transferência de um valor negativo ou igual a zero.
+
+  ![image](https://user-images.githubusercontent.com/95596826/165855950-1bab51f4-cad9-47ad-8ae6-2c985cefb0c6.png)
+  
+  
+  #### 🆘  Transferência de um valor acima do saldo existente na conta de origem.
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165856009-5a001ec6-9790-4b59-ad41-9e055ce35c72.png)
+  
+  
+  
+  ## Agradecimentos: 
+  Gostariamos de agradecer a Wipro, a Gama Academy e aos professores que ministraram o bootcamp pela oportunidade de aprendizado e pelo conhecimento que todo o grupo adquiriu durante essas 5 semanas. Grupo JARVIS 💚
+  
+  
+![wipro_ccexpress](https://user-images.githubusercontent.com/95596826/165858779-6c603d46-daf8-4011-8980-513179267706.png)    ![Meu projeto](https://user-images.githubusercontent.com/95596826/165858542-fa7ccce9-ffb1-4e69-8a68-c5bef81e9117.png)
 
 
