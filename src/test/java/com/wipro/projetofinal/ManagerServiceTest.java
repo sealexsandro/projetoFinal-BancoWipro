@@ -40,7 +40,7 @@ public class ManagerServiceTest {
 	// sucesso ao salvar manager
 	@Test
 	public void managerService_save_manager_test() throws Exception {// atualizar
-		Manager manager = new Manager("José Augusto", "69263712026", "ja@gmail.com", "1232345", "abcd1");
+		Manager manager = new Manager("WiprO", "06154914059", "wipro@gmail.com", "1232345", "0987");
 		// assertThrows(Exception.class, () -> managerService.saveManager(manager));
 		managerService.saveManager(manager);
 
@@ -81,9 +81,9 @@ public class ManagerServiceTest {
 	public void managerService_save_Special_account_success_test() {// atualizar
 		String registration = "1m111";
 		Customer customer = new Customer();
-		customer.setName("Kakaroto josé");
-		customer.setCpf("87338649340");
-		customer.setEmail("kakaroto@email.com");
+		customer.setName("francisco josé");
+		customer.setCpf("80226972062");
+		customer.setEmail("joseaa@email.com");
 		customer.setPassword("12345678");
 		SpecialAccount account = new SpecialAccount();
 		account.setCustomer(customer);
@@ -96,9 +96,9 @@ public class ManagerServiceTest {
 	public void managerService_save_Checking_account_success_test() {// atualizar
 		String registration = "1m111";
 		Customer customer = new Customer();
-		customer.setName("Kuwabara");
+		customer.setName("Kuwabara two");
 		customer.setCpf("39756826711");
-		customer.setEmail("kuaba@email.com");
+		customer.setEmail("k@email.com");
 		customer.setPassword("12345678");
 		CheckingAccount account = new CheckingAccount();
 		account.setCustomer(customer);
@@ -349,7 +349,7 @@ public class ManagerServiceTest {
 	// inexistente
 	@Test
 	public void managerService_deleteAccountSpecial_ManagerInexistent_test() {// atualizar
-		String registrationValid = "1m111";
+		String registrationValid = "0";
 		String registrationInvalid = "";
 		Customer customer = new Customer();
 		customer.setName("oioi");
@@ -378,13 +378,13 @@ public class ManagerServiceTest {
 
 	}
 	@Test
-	public void managerService_updateCustomer_emailEexist_test_failed() {// atualizar
+	public void managerService_updateCustomer_emailExist_test_failed() {// atualizar
 		String registrationValid = "1m111";
 		Customer customer = new Customer();
 		customer.setId(5L);
 		customer.setName("oioi");
 		customer.setCpf("85959916002");
-		customer.setEmail("jose@gmail.com");
+		customer.setEmail("abett@gmail.com");
 		customer.setPassword("12345678");
 		assertThrows(AlreadExistException.class, () -> managerService.updateCustomer(registrationValid, customer));
 
@@ -395,14 +395,14 @@ public class ManagerServiceTest {
 		Customer customer = new Customer();
 		customer.setId(5L);
 		customer.setName("oioi");
-		customer.setCpf("45119704085");
+		customer.setCpf("89548013070");
 		customer.setEmail("jose@gmail.com");
 		customer.setPassword("12345678");
 		assertThrows(AlreadExistException.class, () -> managerService.updateCustomer(registrationValid, customer));
 	}
 	@Test
 	public void managerService_updateCustomer_invalid_registration_test_failed() {// atualizar
-		String registrationValid = "zxcvvvm";
+		String registrationValid = "ass";
 		Customer customer = new Customer();
 		customer.setId(5L);
 		customer.setName("oioi");
@@ -464,6 +464,27 @@ public class ManagerServiceTest {
 		
 		assertThrows(NullPointerException.class, () -> managerService.updateCreditCardLimit(registration, accountNumber, creditCard));
 		
+	}
+	@Test
+	public void managerService_login_success() {
+		String email = "234a@gmail.com";
+		String password = "123456";
+		String expected = "Login efetuado com sucesso !!";	
+		assertTrue(expected == managerService.login(email, password));
+	}
+	@Test
+	public void managerService_login_failed() {
+		String email = "234a@gmail.com";
+		String password = "12345699";
+		String expected = "Login ou senha inválidos.";	
+		assertTrue(expected == managerService.login(email, password));
+	}
+	@Test
+	public void managerService_user_inexist_failed() {
+		String email = "";
+		String password = "";
+		String expected = "Usuário não encontrado";	
+		assertTrue(expected == managerService.login(email, password));
 	}
 	
 }
