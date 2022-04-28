@@ -45,7 +45,7 @@ Utilizamos a plataforma Trello para construir o nosso quadro Kaban e acompanhar 
 ### Diagrama de Classes:
 A Estrutura para a construção das classes JAVA foi baseado no padrão MVC(modelagem, visualização e controle) para obter uma melhor organização visual e prática do nosso projeto.
 
-![WhatsApp Image 2022-04-28 at 12 32 51](https://user-images.githubusercontent.com/95596826/165789574-ae7be04e-8ccf-4a75-af60-b3bfd4f7225b.jpeg)
+![WhatsApp Image 2022-04-28 at 19 38 58](https://user-images.githubusercontent.com/95596826/165860263-011c8dae-813b-437d-8892-c35c9a25ea40.jpeg)
 
 
 ### Diagrama do banco de dados:
