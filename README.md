@@ -41,9 +41,9 @@ Utilizamos a plataforma Trello para construir o nosso quadro Kaban e acompanhar 
 
 
 ## Modelagem do Software:
-A Estrutura para a construção das classes JAVA foi baseado no padrão MVC(modelagem, visualização e controle) para obter uma melhor organização visual e prática do nosso projeto.
 
 ### Diagrama de Classes:
+A Estrutura para a construção das classes JAVA foi baseado no padrão MVC(modelagem, visualização e controle) para obter uma melhor organização visual e prática do nosso projeto.
 
 ![WhatsApp Image 2022-04-28 at 12 32 51](https://user-images.githubusercontent.com/95596826/165789574-ae7be04e-8ccf-4a75-af60-b3bfd4f7225b.jpeg)
 
@@ -92,5 +92,241 @@ O diagrama Entidade Relacionamento é composto por um conjunto de objetos gráfi
 11. Execute as requisições.
 
 
+## EndPoints:
+Os endpoints para teste e acesso ao seus métodos HTTPs (GET, POST, PUT e DELETE) do JarvisApp são:
+
+
+### Endpoint do Manager:
+
+#### 🟡 POST - Criar um manager(gerente)
+
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers
+</code></pre> 
+
+
+{<br>
+    "name": "Wipro da Silva",<br>
+    "cpf": "56895175008",<br>
+    "email": "wipro@gmail.com",<br>
+    "password": "123456"<br>
+   “registration”: d4123<br>
+}<br>
+
+![image](https://user-images.githubusercontent.com/95596826/165825147-600539af-32cc-4301-a9e8-2c33582be5c5.png)
+ <br><br>
+  
+#### 🟡 POST - Criar checking account(conta corrente)
+ <div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/checkingAccount/{registration}
+</code></pre> 
+
+    
+{<br>
+    "balance": 2000,<br>
+    "customer": {<br>
+        "name": "Fabricio Nogueira",<br>
+        "cpf": "10989967042",<br>
+        "email": "fabricio@email.com",<br>
+        "password": "123456"<br>
+    }<br>
+}<br>
+    
+   
+![image](https://user-images.githubusercontent.com/95596826/165829663-867ea9cc-9db3-4d37-9b59-baad46b8ab5e.png)
+
+
+   
+    
+ #### 🟡 POST - Criar special account(conta especial)
+  <div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/specialAccount/{registration}
+</code></pre> 
+    
+    
+{<br>
+    "balance": 2000,<br>
+    "specialLimit": 500.0,<br>
+    "customer": {<br>
+        "name": "Fabricio Nogueira",<br>
+        "cpf": "10989967042",<br>
+        "email": "fabricio@email.com",<br>
+        "password": "123456"<br>
+    }<br>
+}<br>
+
+  ![image](https://user-images.githubusercontent.com/95596826/165828915-7aaad405-33f7-40a9-9256-a874417255c8.png)
+   <br><br>
+    
+    
+    
+#### 🟢 GET - Login do manager(gerente)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/validationPassword?email=(email do manager)&password(senha do manager)
+</code></pre>    
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165832962-3710fd3e-e788-4006-989f-5949cdc5d155.png)
+
+    
+    
+#### 🟢 GET - Consultar todas as accounts(contas)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/accountAll/{registration}
+</code></pre> 
+    
+  ![image](https://user-images.githubusercontent.com/95596826/165830334-1e982638-bf9d-452f-8792-d972453c7ecf.png)
+
+  
+
+  
+#### 🟢 GET - Consultar todas as checking account(conta corrente)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/checkingAccount/{registration}
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165830775-63728473-c3d2-4c63-aaa3-159eef312a67.png)
+  
+  
+  
+  
+#### 🟢 GET - Consultar todas as special account(conta especial)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/managers/specialAccount/{registration}
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165830900-f79247bc-f643-4989-b327-8fc7f560a600.png)
+
+  
+  
+#### 🟢 GET - Consultar uma checking account específica(conta corrente))
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/checkingAccount/{registration}/{accountNumber}
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165831131-434ede88-241f-4a49-9257-0e179f84661b.png)
+
+
+
+#### 🟢  GET - Consultar uma special account específica(conta especial)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/specialAccount/{registration}/{accountNumber}
+</code></pre> 
+
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165831281-ad12f486-35a8-4148-b797-c4f96565f5f7.png)
+
+  
+#### 🔵  PUT - Atualizar dados do cliente
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/customer/{registration}
+</code></pre> 
+  
+{<br>
+   "id": 1,<br>
+    "name": "Fabrício Nogueira Paixão“,<br>
+    "cpf": "50782857094",<br>
+    "email": "fernadoLopes@email.com",<br>
+    "password": "123456"<br>
+}<br>
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165831560-331af655-0a50-4bb5-b6e4-333e6a9b53f1.png)
+
+  
+  * Dados do cliente atualizado
+  
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165831744-b6ea25ed-c42b-4cd5-9805-d83f4ef1b954.png)
+
+  
+#### 🔵  PUT - Ativar cartão de crédito
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/activateCard/{registration}/{accountNumber}
+</code></pre> 
+
+{<br>
+    "creditLimit":"400",<br>
+    "cardLevel": 1<br>
+}<br>
+
+  ![image](https://user-images.githubusercontent.com/95596826/165832061-27dc25c2-a924-44f0-863e-f05dbf034ffb.png)
+  
+ 
+#### 🔵  PUT - Atualizar cartão de crédito
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/updateCard/{registration}/{accountNumber}
+</code></pre> 
+  
+{<br>
+    "creditLimit":"900",<br>
+    "cardLevel": 2<br>
+}<br>
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165832224-ac0d6166-c38e-4fce-b902-542f3951694f.png)
+
+  
+#### 🔴 DELETE - Deletar checking account(conta corrente)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/checkingAccount/{registration}/{accountNumber}
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165832456-54c84a06-0975-4198-b76b-429f4b58e4a8.png)
+
+  
+  
+    
+#### 🔴 DELETE - Deletar special account(conta corrente)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/managers/specialAccount/{registration}/{accountNumber}
+</code></pre> 
+  
+![image](https://user-images.githubusercontent.com/95596826/165832714-447059c7-a9bd-4e57-96b2-a6cc3f00ffa7.png)
+  
+  
+  
+### Endpoint do Customer:
+  
+  
+#### 🟢 GET - Consultar dados da account(conta)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/customers/{accountNumber}
+</code></pre>    
+ 
+ ![image](https://user-images.githubusercontent.com/95596826/165834149-93bc202f-9ae0-4d5d-87ee-1b994a5fd12d.png)
+  
+  
+#### 🟢 GET - Consultar movimentações da account(conta)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">  http://localhost:8081/customers/movimenties/{accountNumber}
+</code></pre>    
+  
+![image](https://user-images.githubusercontent.com/95596826/165834298-afa99570-197c-4c12-a7b7-94b1ee75eb55.png)
+  
+  
+  
+#### 🔵  PUT - Deposit(depositar)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/customers/deposit/{accountNumber}?value=(valor a ser depositado)
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165834446-ecac3e0f-163c-42d6-8608-edd17ecd20f6.png)
+
+
+  
+#### 🔵  PUT - Withdraw(sacar)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate"> http://localhost:8081/customers/withdraw/{accountNumber}?value=(valor a ser sacar)
+</code></pre> 
+  
+  ![image](https://user-images.githubusercontent.com/95596826/165834560-165daff9-bfab-48b4-8dcd-88b1d91ddb03.png)
+  
+  
+  
+#### 🔵  PUT - Transfer(transferir)
+<div class="snippet-clipboard-content position-relative overflow-auto"> 
+<pre class="notranslate"><code class="notranslate">http://localhost:8081/customers/transfer/{accountNumberOrigin}/{accountNumberDestination}?value=(valor a ser transferido)
+</code></pre> 
+  
+ ![image](https://user-images.githubusercontent.com/95596826/165834842-9b4b228a-6835-44cd-b364-9d943644a3a6.png)
+  
 
 
