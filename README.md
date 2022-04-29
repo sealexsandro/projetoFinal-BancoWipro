@@ -385,13 +385,17 @@ Os endpoints para teste e acesso ao seus métodos HTTPs (GET, POST, PUT e DELETE
   
 ## Documentação com Swagger
   
+  ### Tela Inicial:
+ 
+  <img width="723" alt="cap0" src="https://user-images.githubusercontent.com/45294199/165869050-3b62c6ab-edc1-4673-b268-303bebf6b5c0.png">
+
   #### Endpoints do Customer:
   
-  <img width="895" alt="Captura de tela 2022-04-28 212741" src="https://user-images.githubusercontent.com/45294199/165868523-8b6031bc-466a-47d3-bb5c-6bea18c3a343.png">
+  <img width="715" alt="cap1" src="https://user-images.githubusercontent.com/45294199/165869090-e63f4eb8-95fb-4e9d-b821-7cdca77691a4.png">
 
   #### Endpoints do Manager:
   
-  <img width="790" alt="Captura de tela 2022-04-28 213034" src="https://user-images.githubusercontent.com/45294199/165868554-4015d560-b026-4f9f-a4df-7c6bfd4ebfd4.png">
+  <img width="716" alt="cap2" src="https://user-images.githubusercontent.com/45294199/165869107-d129a860-ba0f-4801-88ac-afef3bd93dc7.png">
 
 ## Scripts SQL:
   
